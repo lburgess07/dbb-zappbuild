@@ -80,25 +80,25 @@ def createImpactBuildList(MetadataStore metadataStore) {
 				String impactSearch = props.getFileProperty('impactSearch', changedFile)
 				impacts = resolverUtils.findImpactedFiles(impactSearch, changedFile, metadataStore)
 			}
-			else {
-				String impactResolutionRules = props.getFileProperty('impactResolutionRules', changedFile)
-				ImpactResolver impactResolver = createImpactResolver(changedFile, impactResolutionRules, metadataStore)
+			// else {
+			// 	String impactResolutionRules = props.getFileProperty('impactResolutionRules', changedFile)
+			// 	ImpactResolver impactResolver = createImpactResolver(changedFile, impactResolutionRules, metadataStore)
 
-				// Print impactResolverConfiguration
-				if (props.verbose && props.formatConsoleOutput && props.formatConsoleOutput.toBoolean()) {
-					// print collection information
-					println("    " + "Collection".padRight(20) )
-					println("    " + " ".padLeft(20,"-"))
-					impactResolver.getCollections().each{ collectionName ->
-						println("    " + collectionName)
-					}
-					// print impact resolution rule in table format
-					buildUtils.printResolutionRules(impactResolver.getResolutionRules())
-				}
+			// 	// Print impactResolverConfiguration
+			// 	if (props.verbose && props.formatConsoleOutput && props.formatConsoleOutput.toBoolean()) {
+			// 		// print collection information
+			// 		println("    " + "Collection".padRight(20) )
+			// 		println("    " + " ".padLeft(20,"-"))
+			// 		impactResolver.getCollections().each{ collectionName ->
+			// 			println("    " + collectionName)
+			// 		}
+			// 		// print impact resolution rule in table format
+			// 		buildUtils.printResolutionRules(impactResolver.getResolutionRules())
+			// 	}
 
-				// resolving impacts
-				impacts = impactResolver.resolve()
-			}
+			// 	// resolving impacts
+			// 	impacts = impactResolver.resolve()
+			// }
 			
 			impacts.each { impact ->
 				def impactFile = impact.getFile()
@@ -597,7 +597,7 @@ def reportExternalImpacts(MetadataStore metadataStore, Set<String> changedFiles)
 				// Recursive analysis to support nested scenarios
 
 				// Configure impact resolver
-				ImpactResolver impactResolver = new ImpactResolver().file(changedFile).metadataStore(metadataStore)
+				//ImpactResolver impactResolver = new ImpactResolver().file(changedFile).metadataStore(metadataStore)
 
 				String impactResolutionRules = props.getFileProperty('impactResolutionRules', changedFile)
 				impactResolver.setResolutionRules(buildUtils.parseResolutionRules(impactResolutionRules))
@@ -743,20 +743,20 @@ def generateConcurrentChangesReports(Set<String> buildList, Set<String> concurre
 	}
 }
 
-def createImpactResolver(String changedFile, String rules, MetadataStore metadataStore) {
-	if (props.verbose) println "*** Creating impact resolver for $changedFile with $rules rules"
+// def createImpactResolver(String changedFile, String rules, MetadataStore metadataStore) {
+// 	if (props.verbose) println "*** Creating impact resolver for $changedFile with $rules rules"
 
-	// create an impact resolver for the changed file
-	ImpactResolver resolver = new ImpactResolver().file(changedFile)
-			.collection(props.applicationCollectionName)
-			.collection(props.applicationOutputsCollectionName)
-			.metadataStore(metadataStore)
-	// add resolution rules
-	if (rules)
-		resolver.setResolutionRules(buildUtils.parseResolutionRules(rules))
+// 	// create an impact resolver for the changed file
+// 	ImpactResolver resolver = new ImpactResolver().file(changedFile)
+// 			.collection(props.applicationCollectionName)
+// 			.collection(props.applicationOutputsCollectionName)
+// 			.metadataStore(metadataStore)
+// 	// add resolution rules
+// 	if (rules)
+// 		resolver.setResolutionRules(buildUtils.parseResolutionRules(rules))
 
-	return resolver
-}
+// 	return resolver
+// }
 
 def updateCollection(changedFiles, deletedFiles, renamedFiles, MetadataStore metadataStore) {
 	if (!metadataStore) {
