@@ -115,7 +115,7 @@ def initializeBuildProcess(String[] args) {
 
 	// create a repository client for this script
 	if (!props.userBuild) {
-		metadataStore = MetadataStoreFactor.createMetadataStore();
+		metadataStore = MetadataStoreFactory.createMetadataStore();
 		println "** Metadatastore created"
 	}
 
