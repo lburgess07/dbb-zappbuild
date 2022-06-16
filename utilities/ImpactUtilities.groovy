@@ -888,7 +888,7 @@ def saveStaticLinkDependencies(String buildFile, String loadPDS, LogicalFile log
 		logicalFile.setLogicalDependencies(scannerLogicalFile.getLogicalDependencies())
 
 		// Store logical file and indirect dependencies to the outputs collection
-		metadataStore.saveLogicalFile("${props.applicationOutputsCollectionName}", logicalFile );
+		metadataStore.getCollection("${props.applicationOutputsCollectionName}").addLogicalFile( logicalFile );
 	}
 }
 
