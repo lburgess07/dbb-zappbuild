@@ -310,7 +310,9 @@ def updateBuildResult(Map args) {
 		if (args.logs) {
 			args.logs.each { logName, logFile ->
 				if (logFile)
-					buildResult.addAttachment(logName, new FileInputStream(logFile))
+					Attachment log = new Attachment(logName, "text/log", 0, 0)
+					log.setContent(new FileInputStream(logFile))
+					buildResult.addAttachment(log)
 			}
 		}
 
