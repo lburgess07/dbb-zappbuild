@@ -310,7 +310,8 @@ def updateBuildResult(Map args) {
 		if (args.logs) {
 			args.logs.each { logName, logFile ->
 				if (logFile)
-					Attachment log = new com.ibm.dbb.metadata.common.Attachment(logName, "text/log", 0, 0)
+					println(logName)
+					Attachment log = new com.ibm.dbb.metadata.common.Attachment( (String) logName, "text/log", 0, 0)
 					log.setContent(new FileInputStream(logFile))
 					buildResult.addAttachment(log)
 			}
