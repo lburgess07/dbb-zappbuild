@@ -613,7 +613,7 @@ def finalizeBuildProcess(Map args) {
 
 		// store build result properties in BuildReport.json
 		PropertiesRecord buildReportRecord = new PropertiesRecord("DBB.BuildResultProperties")
-		def buildResultProps = buildResult.getPropertyNames()
+		def buildResultProps = buildResult.getProperties()
 		buildResultProps.each { buildResultPropName ->
 			buildReportRecord.addProperty(buildResultPropName, buildResult.getProperty(buildResultPropName))
 		}
