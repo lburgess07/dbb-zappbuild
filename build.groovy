@@ -385,10 +385,10 @@ def populateBuildProperties(String[] args) {
 	if (opts.re) props.reportExternalImpacts = 'true'
 
 	// set DBB configuration properties
-	if (opts.url) props.'dbb.MetadataStore.url' = opts.url
-	if (opts.id) props.'dbb.MetadataStore.userId' = opts.id
-	if (opts.pw) props.'dbb.MetadataStore.password' = opts.pw
-	if (opts.pf) props.'dbb.MetadataStore.passwordFile' = opts.pf
+	if (opts.url) props.'dbb.metadatastore.db2.url' = opts.url
+	if (opts.id) props.'dbb.metadatastore.db2.userId' = opts.id
+	if (opts.pw) props.'dbb.metadatastore.db2.password' = opts.pw
+	if (opts.pf) props.'dbb.metadatastore.db2.passwordFile' = opts.pf
 
 	// set IDz/ZOD user build options
 	if (opts.e) props.errPrefix = opts.e

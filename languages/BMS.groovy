@@ -1,5 +1,5 @@
 @groovy.transform.BaseScript com.ibm.dbb.groovy.ScriptLoader baseScript
-import com.ibm.dbb.repository.*
+import com.ibm.dbb.metadata.*
 import com.ibm.dbb.dependency.*
 import com.ibm.dbb.build.*
 import groovy.transform.*
@@ -149,7 +149,7 @@ def createLinkEditCommand(String buildFile, String member, File logFile) {
 }
 
 def getMetadataStore() {
-	if (!metadataStore && props."dbb.MetadataStore.url")
+	if (!metadataStore && props."dbb.metadatastore.db2.url")
 		metadataStore = new MetadataStore().forceSSLTrusted(true)
 	
 	return metadataStore
