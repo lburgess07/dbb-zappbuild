@@ -870,7 +870,7 @@ def updateCollection(changedFiles, deletedFiles, renamedFiles, MetadataStore met
 	if (props.verbose)
 		println "** Storing ${logicalFiles.size()} logical files in repository collection '$props.applicationCollectionName'"
 	metadataStore.getCollection( props.applicationCollectionName ).addLogicalFiles(logicalFiles);
-	if (props.verbose) println(metadataStore.getLastStatus())
+	//if (props.verbose) println(metadataStore.getLastStatus())
 }
 
 /*
