@@ -617,7 +617,7 @@ def finalizeBuildProcess(Map args) {
 		// buildResultProps.each { buildResultPropName ->
 		// 	buildReportRecord.addProperty(buildResultPropName, buildResult.getProperty(buildResultPropName))
 		// }
-		def buildResultProps = buildResult.getProperties
+		def buildResultProps = buildResult.getProperties()
 		buildResultProps.each { name, value ->
 			buildReportRecord.addProperty(name, value)
 		}
