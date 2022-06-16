@@ -35,8 +35,8 @@ sortedList.each { buildFile ->
 		logicalFile = SearchPathDependencyResolver.getLogicalFile(buildFile,props.workspace)
 	}
 	else { // use deprecated DependencyResolver API
-		DependencyResolver dependencyResolver = buildUtils.createDependencyResolver(buildFile, null)
-		logicalFile = dependencyResolver.getLogicalFile()
+		// DependencyResolver dependencyResolver = buildUtils.createDependencyResolver(buildFile, null)
+		// logicalFile = dependencyResolver.getLogicalFile()
 	}
 	
 	String member = CopyToPDS.createMemberName(buildFile)
@@ -122,8 +122,8 @@ def createLinkEditCommand(String buildFile, LogicalFile logicalFile, String memb
 
 
 def getMetadataStore() {
-	if (!metadataStore && props."dbb.metadatastore.db2.url")
-		metadataStore = new MetadataStore().forceSSLTrusted(true)
+	if (!metadataStore)
+		metadataStore = MetadataStoreFactory.getMetadataStore()
 
 	return metadataStore
 }
