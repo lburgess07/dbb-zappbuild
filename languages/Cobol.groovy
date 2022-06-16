@@ -53,10 +53,12 @@ sortedList.each { buildFile ->
 		dependencyResolver = resolverUtils.createSearchPathDependencyResolver(dependencySearch)
 		logicalFile = resolverUtils.createLogicalFile(dependencyResolver, buildFile)
 
-	} else { // use deprecated DependencyResolver
-		String rules = props.getFileProperty('cobol_resolutionRules', buildFile)
-		dependencyResolver = buildUtils.createDependencyResolver(buildFile, rules)
-		logicalFile = dependencyResolver.getLogicalFile()
+	} 
+	else { // use deprecated DependencyResolver
+		println("Using deprecated dr");
+		// String rules = props.getFileProperty('cobol_resolutionRules', buildFile)
+		// dependencyResolver = buildUtils.createDependencyResolver(buildFile, rules)
+		// logicalFile = dependencyResolver.getLogicalFile()
 	}
 	
 	// copy build file and dependency files to data sets

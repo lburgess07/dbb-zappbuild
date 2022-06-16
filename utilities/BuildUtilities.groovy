@@ -157,18 +157,19 @@ def copySourceFiles(String buildFile, String srcPDS, String dependencyDatasetMap
 		// resolve the logical dependencies to physical files to copy to data sets
 		List<PhysicalDependency> physicalDependencies
 
-		if (dependencyResolver instanceof DependencyResolver) { // deprecated DependencyResolver
-			physicalDependencies = dependencyResolver.resolve()
-			if (props.verbose) {
-				println "*** Resolution rules for $buildFile:"
+		// if (dependencyResolver instanceof DependencyResolver) { // deprecated DependencyResolver
+		// 	physicalDependencies = dependencyResolver.resolve()
+		// 	if (props.verbose) {
+		// 		println "*** Resolution rules for $buildFile:"
 
-				if (props.formatConsoleOutput && props.formatConsoleOutput.toBoolean()) {
-					printResolutionRules(dependencyResolver.getResolutionRules())
-				} else {
-					dependencyResolver.getResolutionRules().each{ rule -> println rule }
-				}
-			}
-		} else if (props.useSearchConfiguration && props.useSearchConfiguration.toBoolean() && assertDbbBuildToolkitVersion(props.dbbToolkitVersion, "1.1.2")) {
+		// 		if (props.formatConsoleOutput && props.formatConsoleOutput.toBoolean()) {
+		// 			printResolutionRules(dependencyResolver.getResolutionRules())
+		// 		} else {
+		// 			dependencyResolver.getResolutionRules().each{ rule -> println rule }
+		// 		}
+		// 	}
+		// }
+		if (props.useSearchConfiguration && props.useSearchConfiguration.toBoolean() && assertDbbBuildToolkitVersion(props.dbbToolkitVersion, "1.1.2")) {
 			resolverUtils = loadScript(new File("ResolverUtilities.groovy"))
 			physicalDependencies = resolverUtils.resolveDependencies(dependencyResolver, buildFile)
 		}
@@ -322,23 +323,23 @@ def updateBuildResult(Map args) {
  * createDependencyResolver - Creates a dependency resolver using resolution rules declared
  * in a build or file property (json format).
  */
-def createDependencyResolver(String buildFile, String rules) {
-	if (props.verbose) println "*** Creating dependency resolver for $buildFile with $rules rules"
+// def createDependencyResolver(String buildFile, String rules) {
+// 	if (props.verbose) println "*** Creating dependency resolver for $buildFile with $rules rules"
 
-	// create a dependency resolver for the build file
-	DependencyResolver resolver = new DependencyResolver().file(buildFile)
-			.sourceDir(props.workspace)
+// 	// create a dependency resolver for the build file
+// 	DependencyResolver resolver = new DependencyResolver().file(buildFile)
+// 			.sourceDir(props.workspace)
 	
-	// add scanner if userBuild Dep File not provided, or not a user build
-	if (!props.userBuildDependencyFile || !props.userBuild)
-		resolver.setScanner(getScanner(buildFile))
+// 	// add scanner if userBuild Dep File not provided, or not a user build
+// 	if (!props.userBuildDependencyFile || !props.userBuild)
+// 		resolver.setScanner(getScanner(buildFile))
 
-	// add resolution rules
-	if (rules)
-		resolver.setResolutionRules(parseResolutionRules(rules))
+// 	// add resolution rules
+// 	if (rules)
+// 		resolver.setResolutionRules(parseResolutionRules(rules))
 
-	return resolver
-}
+// 	return resolver
+// }
 
 def parseResolutionRules(String json) {
 	List<ResolutionRule> rules = new ArrayList<ResolutionRule>()
