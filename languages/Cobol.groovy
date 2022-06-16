@@ -13,7 +13,7 @@ import com.ibm.dbb.build.report.records.*
 @Field def buildUtils= loadScript(new File("${props.zAppBuildDir}/utilities/BuildUtilities.groovy"))
 @Field def impactUtils= loadScript(new File("${props.zAppBuildDir}/utilities/ImpactUtilities.groovy"))
 @Field def bindUtils= loadScript(new File("${props.zAppBuildDir}/utilities/BindUtilities.groovy"))
-@Field RepositoryClient repositoryClient
+@Field MetadataStore metadataStore
 
 @Field def resolverUtils
 // Conditionally load the ResolverUtilities.groovy which require at least DBB 1.1.2
@@ -88,7 +88,7 @@ sortedList.each { buildFile ->
 		String errorMsg = "*! The compile return code ($rc) for $buildFile exceeded the maximum return code allowed ($maxRC)"
 		println(errorMsg)
 		props.error = "true"
-		buildUtils.updateBuildResult(errorMsg:errorMsg,logs:["${member}.log":logFile],client:getRepositoryClient())
+		buildUtils.updateBuildResult(errorMsg:errorMsg,logs:["${member}.log":logFile],client:getMetadataStore())
 	}
 	else { // if this program needs to be link edited . . .
 		
@@ -109,14 +109,14 @@ sortedList.each { buildFile ->
 				String errorMsg = "*! The link edit return code ($rc) for $buildFile exceeded the maximum return code allowed ($maxRC)"
 				println(errorMsg)
 				props.error = "true"
-				buildUtils.updateBuildResult(errorMsg:errorMsg,logs:["${member}.log":logFile],client:getRepositoryClient())
+				buildUtils.updateBuildResult(errorMsg:errorMsg,logs:["${member}.log":logFile],client:getMetadataStore())
 			}
 			else {
 				if(!props.userBuild && !isZUnitTestCase){
 					// only scan the load module if load module scanning turned on for file
 					String scanLoadModule = props.getFileProperty('cobol_scanLoadModule', buildFile)
-					if (scanLoadModule && scanLoadModule.toBoolean() && getRepositoryClient())
-						impactUtils.saveStaticLinkDependencies(buildFile, props.linkedit_loadPDS, logicalFile, repositoryClient)
+					if (scanLoadModule && scanLoadModule.toBoolean() && getMetadataStore())
+						impactUtils.saveStaticLinkDependencies(buildFile, props.linkedit_loadPDS, logicalFile, metadataStore)
 				}
 			}
 		}
@@ -135,7 +135,7 @@ sortedList.each { buildFile ->
 			String errorMsg = "*! The bind package return code ($bindRc) for $buildFile exceeded the maximum return code allowed ($props.bind_maxRC)"
 			println(errorMsg)
 			props.error = "true"
-			buildUtils.updateBuildResult(errorMsg:errorMsg,logs:["${member}_bind.log":bindLogFile],client:getRepositoryClient())
+			buildUtils.updateBuildResult(errorMsg:errorMsg,logs:["${member}_bind.log":bindLogFile],client:getMetadataStore())
 		}
 	}
 
@@ -265,7 +265,7 @@ def createCompileCommand(String buildFile, LogicalFile logicalFile, String membe
 				String errorMsg = "*! Cobol.groovy. The dataset definition $datasetDefinition could not be resolved from the DBB Build properties."
 				println(errorMsg)
 				props.error = "true"
-				buildUtils.updateBuildResult(errorMsg:errorMsg,client:getRepositoryClient())
+				buildUtils.updateBuildResult(errorMsg:errorMsg,client:getMetadataStore())
 			}
 		}
 	}
@@ -392,11 +392,11 @@ def createLinkEditCommand(String buildFile, LogicalFile logicalFile, String memb
 }
 
 
-def getRepositoryClient() {
-	if (!repositoryClient && props."dbb.RepositoryClient.url")
-		repositoryClient = new RepositoryClient().forceSSLTrusted(true)
+def getMetadataStore() {
+	if (!metadataStore)
+		metadataStore = MetadataStoreFactory.getMetadataStore()
 
-	return repositoryClient
+	return metadataStore
 }
 
 boolean buildListContainsTests(List<String> buildList) {

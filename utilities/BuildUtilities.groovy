@@ -535,20 +535,20 @@ def getLangPrefix(String scriptName){
 }
 
 /*
- * retrieveLastBuildResult(RepositoryClient)
+ * retrieveLastBuildResult(MetadataStore)
  * returns last successful build result
  *
  */
-def retrieveLastBuildResult(RepositoryClient repositoryClient){
+def retrieveLastBuildResult(MetadataStore metadataStore){
 
 	// get the last build result
-	def lastBuildResult = repositoryClient.getLastBuildResult(props.applicationBuildGroup, BuildResult.COMPLETE, BuildResult.CLEAN)
+	def lastBuildResult = metadataStore.getLastBuildResult(props.applicationBuildGroup, BuildResult.COMPLETE, BuildResult.CLEAN)
 
 	if (lastBuildResult == null && props.topicBranchBuild){
 		// if this is the first topic branch build get the main branch build result
 		if (props.verbose) println "** No previous successful topic branch build result. Retrieving last successful main branch build result."
 		String mainBranchBuildGroup = "${props.application}-${props.mainBuildBranch}"
-		lastBuildResult = repositoryClient.getLastBuildResult(mainBranchBuildGroup, BuildResult.COMPLETE, BuildResult.CLEAN)
+		lastBuildResult = metadataStore.getLastBuildResult(mainBranchBuildGroup, BuildResult.COMPLETE, BuildResult.CLEAN)
 	}
 
 	if (lastBuildResult == null) {
