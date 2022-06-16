@@ -341,30 +341,30 @@ def updateBuildResult(Map args) {
 // 	return resolver
 // }
 
-def parseResolutionRules(String json) {
-	List<ResolutionRule> rules = new ArrayList<ResolutionRule>()
-	JsonSlurper slurper = new groovy.json.JsonSlurper()
-	List jsonRules = slurper.parseText(json)
-	if (jsonRules) {
-		jsonRules.each { jsonRule ->
-			ResolutionRule resolutionRule = new ResolutionRule()
-			resolutionRule.library(jsonRule.library)
-			resolutionRule.lname(jsonRule.lname)
-			resolutionRule.category(jsonRule.category)
-			if (jsonRule.searchPath) {
-				jsonRule.searchPath.each { jsonPath ->
-					DependencyPath dependencyPath = new DependencyPath()
-					dependencyPath.collection(jsonPath.collection)
-					dependencyPath.sourceDir(jsonPath.sourceDir)
-					dependencyPath.directory(jsonPath.directory)
-					resolutionRule.path(dependencyPath)
-				}
-			}
-			rules << resolutionRule
-		}
-	}
-	return rules
-}
+// def parseResolutionRules(String json) {
+// 	List<ResolutionRule> rules = new ArrayList<ResolutionRule>()
+// 	JsonSlurper slurper = new groovy.json.JsonSlurper()
+// 	List jsonRules = slurper.parseText(json)
+// 	if (jsonRules) {
+// 		jsonRules.each { jsonRule ->
+// 			ResolutionRule resolutionRule = new ResolutionRule()
+// 			resolutionRule.library(jsonRule.library)
+// 			resolutionRule.lname(jsonRule.lname)
+// 			resolutionRule.category(jsonRule.category)
+// 			if (jsonRule.searchPath) {
+// 				jsonRule.searchPath.each { jsonPath ->
+// 					DependencyPath dependencyPath = new DependencyPath()
+// 					dependencyPath.collection(jsonPath.collection)
+// 					dependencyPath.sourceDir(jsonPath.sourceDir)
+// 					dependencyPath.directory(jsonPath.directory)
+// 					resolutionRule.path(dependencyPath)
+// 				}
+// 			}
+// 			rules << resolutionRule
+// 		}
+// 	}
+// 	return rules
+// }
 
 
 
@@ -702,29 +702,29 @@ def retrieveHFSFileEncoding(File file) {
  * Logs the resolution rules of the DependencyResolver in a table format
  * 
  */
-def printResolutionRules(List<ResolutionRule> rules) {
+// def printResolutionRules(List<ResolutionRule> rules) {
 
-	println("*** Configured resulution rules:")
+// 	println("*** Configured resulution rules:")
 	
-	// Print header of table
-	println("    " + "Library".padRight(10) + "Category".padRight(12) + "SourceDir/File".padRight(50) + "Directory".padRight(36) + "Collection".padRight(24) + "Archive".padRight(20))
-	println("    " + " ".padLeft(10,"-") + " ".padLeft(12,"-") + " ".padLeft(50,"-") + " ".padLeft(36,"-") + " ".padLeft(24,"-") + " ".padLeft(20,"-"))
+// 	// Print header of table
+// 	println("    " + "Library".padRight(10) + "Category".padRight(12) + "SourceDir/File".padRight(50) + "Directory".padRight(36) + "Collection".padRight(24) + "Archive".padRight(20))
+// 	println("    " + " ".padLeft(10,"-") + " ".padLeft(12,"-") + " ".padLeft(50,"-") + " ".padLeft(36,"-") + " ".padLeft(24,"-") + " ".padLeft(20,"-"))
 
-	// iterate over rules configured for the dependencyResolver
-	rules.each{ rule ->
-		searchPaths = rule.getSearchPath()
-		searchPaths.each { DependencyPath searchPath ->
-			def libraryName = (rule.getLibrary() != null) ? rule.getLibrary().padRight(10) : "N/A".padRight(10)
-			def categoryName = (rule.getCategory() != null) ? rule.getCategory().padRight(12) : "N/A".padRight(12)
-			def srcDir = (searchPath.getSourceDir() != null) ? searchPath.getSourceDir().padRight(50) : "N/A".padRight(50)
-			def directory = (searchPath.getDirectory() != null) ? searchPath.getDirectory().padRight(36) : "N/A".padRight(36)
-			def collection = (searchPath.getCollection() != null) ? searchPath.getCollection().padRight(24) : "N/A".padRight(24)
-			def archiveFile = (searchPath.getArchive() != null) ? searchPath.getArchive().padRight(20) : "N/A".padRight(20)
-			println("    " + libraryName + categoryName + srcDir + directory + collection + archiveFile)
+// 	// iterate over rules configured for the dependencyResolver
+// 	rules.each{ rule ->
+// 		searchPaths = rule.getSearchPath()
+// 		searchPaths.each { DependencyPath searchPath ->
+// 			def libraryName = (rule.getLibrary() != null) ? rule.getLibrary().padRight(10) : "N/A".padRight(10)
+// 			def categoryName = (rule.getCategory() != null) ? rule.getCategory().padRight(12) : "N/A".padRight(12)
+// 			def srcDir = (searchPath.getSourceDir() != null) ? searchPath.getSourceDir().padRight(50) : "N/A".padRight(50)
+// 			def directory = (searchPath.getDirectory() != null) ? searchPath.getDirectory().padRight(36) : "N/A".padRight(36)
+// 			def collection = (searchPath.getCollection() != null) ? searchPath.getCollection().padRight(24) : "N/A".padRight(24)
+// 			def archiveFile = (searchPath.getArchive() != null) ? searchPath.getArchive().padRight(20) : "N/A".padRight(20)
+// 			println("    " + libraryName + categoryName + srcDir + directory + collection + archiveFile)
 
-		}
-	}
-}
+// 		}
+// 	}
+// }
 
 /*
  * Logs information about the physical dependencies in a table format
