@@ -645,10 +645,15 @@ def finalizeBuildProcess(Map args) {
 	// attach build report & result
 	if (metadataStore) {
 		buildReport.save(jsonOutputFile, buildReportEncoding)
-		buildResult.setBuildReport(new FileInputStream(htmlOutputFile))
-		buildResult.setBuildReportData(new FileInputStream(jsonOutputFile))
+		// Create attachments
+		Attachment htmlAttachment = new com.ibm.dbb.metadata.common.Attachment("", "html", 0, 0)
+		htmlAttachment.setContent(new FileInputStream(htmlOutputFile))
+		Attachment jsonAttachment = new com.ibm.dbb.metadata.common.Attachment("", "json", 0, 0)
+		jsonAttachment.setContent(new FileInputStream(jsonOutputFile))
+		buildResult.setBuildReport(htmlAttachment)
+		buildResult.setBuildReportData(jsonAttachment)
 		println "** Updating build result BuildGroup:${props.applicationBuildGroup} BuildLabel:${props.applicationBuildLabel} at ${props.buildResultUrl}"
-		buildResult.save()
+		//buildResult.save()
 	}
 
 	// print end build message
