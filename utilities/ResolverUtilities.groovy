@@ -62,5 +62,6 @@ def resolveDependencies(SearchPathDependencyResolver dependencyResolver, String 
 		println "*** Resolution rules for $buildFile:"
 		println dependencyResolver.getSearchPath()
 	}
+	println(" Calling dependencyResolver.resolveDependencies(${buildFile}, ${props.workspace})")
 	return dependencyResolver.resolveDependencies(buildFile, props.workspace)
 }
