@@ -816,6 +816,6 @@ def loadFileLevelPropertiesFromFile(List<String> buildList) {
  * The minimum required DBB version for Search Path APIs is DBB v1.1.2. 
  */
 def useSearchPathAPI() {
-	return props.useSearchConfiguration && props.useSearchConfiguration.toBoolean() && buildUtils.assertDbbBuildToolkitVersion(props.dbbToolkitVersion, "1.1.2")
+	return props.useSearchConfiguration && props.useSearchConfiguration.toBoolean() && assertDbbBuildToolkitVersion(props.dbbToolkitVersion, "1.1.2")
 }
 
