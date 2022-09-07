@@ -811,3 +811,11 @@ def loadFileLevelPropertiesFromFile(List<String> buildList) {
 	}
 }
 
+/*
+ * Determine whether DBB supports and zAppBuild is configured to use the new Search Path APIs.
+ * The minimum required DBB version for Search Path APIs is DBB v1.1.2. 
+ */
+def useSearchPathAPI() {
+	return props.useSearchConfiguration && props.useSearchConfiguration.toBoolean() && buildUtils.assertDbbBuildToolkitVersion(props.dbbToolkitVersion, "1.1.2")
+}
+
