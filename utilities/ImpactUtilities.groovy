@@ -14,7 +14,6 @@ import java.util.regex.*
 @Field def gitUtils= loadScript(new File("GitUtilities.groovy"))
 @Field def buildUtils= loadScript(new File("BuildUtilities.groovy"))
 @Field String hashPrefix = ':githash:'
-@Field def resolverUtils
 
 
 def createImpactBuildList() {
