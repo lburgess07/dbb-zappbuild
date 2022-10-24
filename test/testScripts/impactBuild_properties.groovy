@@ -7,6 +7,7 @@ import com.ibm.jzos.ZFile
 
 @Field BuildProperties props = BuildProperties.getInstance()
 println "\n### Executing test script impactBuild_properties.groovy"
+argMap.testList.add("Impact Build (Properties)") // add test to list
 
 // Get the DBB_HOME location
 def dbbHome = EnvVars.getHome()
@@ -119,11 +120,13 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 	// Validate expected built files in output stream
 	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD FAILED FOR CHANGED PROPERTY $changedFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}\nOUTPUT STREAM:\n$outputStream\n"
 	
+	argMap.testResults.add("PASSED")
 	println "**"
 	println "** IMPACT BUILD ON PROPERTY CHANGE : PASSED FOR $changedFile **"
 	println "**"
 	}
 	catch(AssertionError e) {
+		argMap.testResults.add("! FAILED")
 		def result = e.getMessage()
 		assertionList << result;
 		props.testsSucceeded = false

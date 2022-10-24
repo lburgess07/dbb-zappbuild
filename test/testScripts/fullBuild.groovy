@@ -6,6 +6,7 @@ import com.ibm.jzos.ZFile
 
 @Field BuildProperties props = BuildProperties.getInstance()
 println "\n** Executing test script fullBuild.groovy"
+argMap.testList.add("Full Build") // Add test name to testList
 
 // Get the DBB_HOME location
 def dbbHome = EnvVars.getHome()
@@ -50,11 +51,13 @@ try {
 	// Validate expected built files in output stream
 	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! FILES PROCESSED IN THE FULL BUILD DOES NOT CONTAIN THE LIST OF FILES PASSED ${expectedFilesBuiltList}\nOUTPUT STREAM:\n$outputStream\n"
 	
+	argMap.testResults.add("PASSED")
 	println "**"
 	println "** FULL BUILD TEST : PASSED **"
 	println "**"
 }
 catch(AssertionError e) {
+	argMap.testResults.add("! FAILED")
 	def result = e.getMessage()
 	assertionList << result;
 	props.testsSucceeded = false
@@ -63,10 +66,10 @@ finally {
 	cleanUpDatasets()
 	if (assertionList.size()>0) {
 		println "\n***"
-	println "**START OF FAILED FULL BUILD TEST RESULTS**\n"
-	println "*FAILED FULL BUILD RESULTS*\n" + assertionList
-	println "\n**END OF FAILED FULL BUILD **"
-	println "***"
+		println "**START OF FAILED FULL BUILD TEST RESULTS**\n"
+		println "*FAILED FULL BUILD RESULTS*\n" + assertionList
+		println "\n**END OF FAILED FULL BUILD **"
+		println "***"
   }
 	
 }

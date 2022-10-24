@@ -7,6 +7,7 @@ import com.ibm.jzos.ZFile
 
 @Field BuildProperties props = BuildProperties.getInstance()
 println "\n** Executing test script impactBuild_deletion.groovy"
+argMap.testList.add("Impact Build (Deletion)") // add test to list
 
 // Get the DBB_HOME location
 def dbbHome = EnvVars.getHome()
@@ -140,11 +141,14 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 			assert outputStream.contains("** Deleting ${props.hlq}.${deletedOutput}") : "*! IMPACT BUILD FOR DELETION OF $deleteFile DO NOT FIND DELETION OF LOAD MODULE\nOUTPUT STREAM:\n$outputStream\n"
 
 		}
+		
+		argMap.testResults.add("PASSED")
 		println "**"
 		println "** IMPACT BUILD TEST - FILE DELETE : PASSED FOR DELETING $deleteFile **"
 		println "**"
 	}
 	catch(AssertionError e) {
+		argMap.testResults.add("! FAILED")
 		def result = e.getMessage()
 		assertionList << result;
 	}

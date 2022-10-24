@@ -7,6 +7,7 @@ import com.ibm.jzos.ZFile
 
 @Field BuildProperties props = BuildProperties.getInstance()
 println "\n** Executing test script mergeBuild.groovy"
+argMap.testList.add("Merge Build") // add test to list
 
 // Get the DBB_HOME location
 def dbbHome = EnvVars.getHome()
@@ -57,10 +58,10 @@ finally {
 	cleanUpDatasets()
 	if (assertionList.size()>0) {
         println "\n***"
-	println "**START OF FAILED MERGED BUILD TEST RESULTS**\n"
-	println "*FAILED MERGED BUILD TEST RESULTS*\n" + assertionList
-	println "\n**END OF FAILED MERGED BUILD TEST RESULTS**"
-	println "***"
+		println "**START OF FAILED MERGED BUILD TEST RESULTS**\n"
+		println "*FAILED MERGED BUILD TEST RESULTS*\n" + assertionList
+		println "\n**END OF FAILED MERGED BUILD TEST RESULTS**"
+		println "***"
   }
 }
 // script end  
@@ -110,11 +111,13 @@ def validateMergeBuild(String changedFile, PropertyMappings filesBuiltMappings, 
 	// Validate expected built files in output stream
 	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! MERGED BUILD FOR $changedFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}\nOUTPUT STREAM:\n$outputStream\n"
 	
+	argMap.testResults.add("PASSED")
 	println "**"
 	println "** MERGED BUILD TEST : PASSED FOR $changedFile **"
 	println "**"
     }
     catch(AssertionError e) {
+		argMap.testResults.add("! FAILED")
         def result = e.getMessage()
         assertionList << result;
 		props.testsSucceeded = false

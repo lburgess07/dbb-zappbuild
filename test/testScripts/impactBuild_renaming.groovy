@@ -7,6 +7,7 @@ import com.ibm.jzos.ZFile
 
 @Field BuildProperties props = BuildProperties.getInstance()
 println "\n** Executing test script impactBuild_renaming.groovy"
+argMap.testList.add("Impact Build (Renaming)") // add test to list
 
 // Get the DBB_HOME location
 def dbbHome = EnvVars.getHome()
@@ -105,12 +106,14 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 
 		// Validate message that file renamed was deleted from collections
 		assert outputStream.contains("*** Deleting renamed logical file for ${props.app}/${renameFile}") : "*! IMPACT BUILD FOR $renameFile DO NOT FIND DELETION OF LOGICAL FILE\nOUTPUT STREAM:\n$outputStream\n"
-				
+		
+		argMap.testResults.add("PASSED")
 		println "**"
 		println "** IMPACT BUILD TEST - FILE RENAME : PASSED FOR RENAMING $renameFile **"
 		println "**"
 	}
 	catch(AssertionError e) {
+		argMap.testResults.add("! FAILED")
 		def result = e.getMessage()
 		assertionList << result;
 		props.testsSucceeded = false

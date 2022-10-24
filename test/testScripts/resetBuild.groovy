@@ -6,8 +6,7 @@ import com.ibm.jzos.ZFile
 
 @Field BuildProperties props = BuildProperties.getInstance()
 println "\n** Executing test script resetBuild.groovy"
-println(argMap)
-argMap.testList.add("RESET BUILD") // Add test name to testList
+argMap.testList.add("Reset Build") // Add test name to testList
 
 // Get the DBB_HOME location
 def dbbHome = EnvVars.getHome()
@@ -49,7 +48,7 @@ try {
 }
 catch (AssertionError ae) {
     def message = ae.getMessage()
-    argMap.testResultsFile.add("! FAILED: ${message}")
+    argMap.testResults.add("! FAILED")
     println(message)
 }
 

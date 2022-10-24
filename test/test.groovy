@@ -13,8 +13,8 @@ createTestBranch(props)
 
 // flag to control test process
 props.testsSucceeded = 'true'
-def testList = new ArrayList<String>()
-def testResults = new ArrayList<String>()
+def testList = []
+def testResults = []
 
 // run the test scripts
 try {
@@ -35,16 +35,6 @@ try {
 finally {
 	// delete test branch
 	deleteTestBranch(props)
-	
-	println(testList)
-	println(testResults)
-	println("\n* Testing Complete *\n")
-	testList.eachWithIndex { testName, index -> 
-		def testNum = index + 1
-		println "#${testNum} [${testName}]		${testResults.get(index)}"
-	}
-
-	println("\n")
 
 	// if error occurred signal process error
 	if (props.testsSucceeded.toBoolean() == false) {
@@ -52,6 +42,13 @@ finally {
 		System.exit(1)
 	} else {
 		println("* ZAPPBUILD TESTFRAMEWORK COMPLETED. All tests (${props.test_testOrder}) completed successfully.")
+	}
+	
+	// Print test results
+	println("\n* Test Results *")
+	testList.eachWithIndex { testName, index -> 
+		def testNum = index + 1
+		println "${testNum}. [${testName}]		${testResults.get(index)}"
 	}
 	
 }
