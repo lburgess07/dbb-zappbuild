@@ -13,8 +13,8 @@ createTestBranch(props)
 
 // flag to control test process
 props.testsSucceeded = 'true'
-def testResultsFile = File.createTempFile("results", null)
-testResultsFile.deleteOnExit()
+def testList = []
+def testResults = []
 
 // run the test scripts
 try {
@@ -25,7 +25,7 @@ try {
 		
 		testOrder.each { script ->
 		   // run the test script	
-		   runScript(new File("testScripts/$script"), [testResultsFile:testResultsFile])
+		   runScript(new File("testScripts/$script"), [testList:testList, testResults:testResults])
 	    }
 	}
 	else {
@@ -37,12 +37,9 @@ finally {
 	deleteTestBranch(props)
 	
 	println("\n* Testing Complete *\n")
-	testResultsFile.readLines().eachWithIndex { testData, index -> 
-		String[] testNameAndStatus = testData.split(',')
-		String testName = testNameAndStatus.get(0).trim()
-		String testResult = testNameAndStatus.get(1).trim()
+	testList.eachWithIndex { testName, index -> 
 		def testNum = index + 1
-		println "# ${testNum} . ${testName} 		${testResult}"
+		println "#${testNum} [${testName}]		${testResults.get(index)}"
 	}
 
 	println("\n")

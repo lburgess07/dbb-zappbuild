@@ -7,6 +7,7 @@ import com.ibm.jzos.ZFile
 @Field BuildProperties props = BuildProperties.getInstance()
 println "\n** Executing test script resetBuild.groovy"
 println(argMap)
+argMap.testList.add("RESET BUILD") // Add test name to testList
 
 // Get the DBB_HOME location
 def dbbHome = EnvVars.getHome()
@@ -40,7 +41,7 @@ println "** Validating reset build"
 try {
     assert outputStream.contains("Deleting collection") && ("Deleting build result group") && ("Build finished") : "*! RESET OF THE BUILD FAILED\nOUTPUT STREAM:\n$outputStream\n"
 
-    argMap.testResultsFile.append("RESET OF THE BUILD, PASSED\n")
+    argMap.testResults.append("PASSED")
     println "**"
     println "** RESET OF THE BUILD : PASSED **"
     println "**"
@@ -48,6 +49,7 @@ try {
 }
 catch (AssertionError ae) {
     def message = ae.getMessage()
-    argMap.testResultsFile.append("RESET OF THE BUILD, ! FAILED: ${message}\n")
+    println(message)
+    argMap.testResultsFile.append("! FAILED: ${message}")
 }
 
