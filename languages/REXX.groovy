@@ -28,7 +28,7 @@ sortedList.each { buildFile ->
 	
 	// configure dependency resolution and create logical file	
 	String dependencySearch = props.getFileProperty('rexx_dependencySearch', buildFile)
-	def dependencyResolver = resolverUtils.createSearchPathDependencyResolver(dependencySearch)
+	def dependencyResolver = new SearchPathDependencyResolver(dependencySearch)
 	
 	// copy build file and dependency files to data sets
 	buildUtils.copySourceFiles(buildFile, props.rexx_srcPDS, 'rexx_dependenciesDatasetMapping', null, dependencyResolver)

@@ -29,7 +29,7 @@ sortedList.each { buildFile ->
 
 	// Configure dependency resolution
 	String dependencySearch = props.getFileProperty('assembler_dependencySearch', buildFile)
-	def dependencyResolver = resolverUtils.createSearchPathDependencyResolver(dependencySearch)
+	def dependencyResolver = new SearchPathDependencyResolver(dependencySearch)
 	
 	// Copy build file and dependency files to data sets
 	buildUtils.copySourceFiles(buildFile, props.assembler_srcPDS, 'assembler_dependenciesDatasetMapping', null ,dependencyResolver)
