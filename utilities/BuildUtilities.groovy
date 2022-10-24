@@ -772,14 +772,6 @@ def createLogicalFile(SearchPathDependencyResolver spDependencyResolver, String 
 
 }
 
-/**
- * 
- * @param dependencySearch
- * @return SearchPathDependencyResolver
- */
-// def createSearchPathDependencyResolver(String dependencySearch) {
-// 	return new SearchPathDependencyResolver(dependencySearch)
-// }
 
 def findImpactedFiles(String impactSearch, String changedFile) {
 	
