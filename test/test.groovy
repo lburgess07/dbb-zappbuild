@@ -13,6 +13,8 @@ createTestBranch(props)
 
 // flag to control test process
 props.testsSucceeded = 'true'
+def testList = [] // list of test names
+def testResults = [] // list of RESULT (SUCCESS or ERROR)
 
 // run the test scripts
 try {
