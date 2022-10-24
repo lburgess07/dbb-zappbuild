@@ -36,6 +36,15 @@ finally {
 	// delete test branch
 	deleteTestBranch(props)
 	
+	println("\n* Testing Complete *\n")
+	println("TEST #		RESULT")
+	testList.eachWithIndex { testName, index -> 
+		def testNum = index + 1
+		println "# ${testNum}		${testResults.get(index)}"
+	}
+
+	println("\n")
+
 	// if error occurred signal process error
 	if (props.testsSucceeded.toBoolean() == false) {
 		println("*! Not all test scripts completed successfully. Please check console outputs. Send exit signal.")
