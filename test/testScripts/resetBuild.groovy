@@ -41,7 +41,7 @@ println "** Validating reset build"
 try {
     assert outputStream.contains("Deleting collection") && ("Deleting build result group") && ("Build finished") : "*! RESET OF THE BUILD FAILED\nOUTPUT STREAM:\n$outputStream\n"
 
-    argMap.testResults.append("PASSED")
+    argMap.testResults.add("PASSED")
     println "**"
     println "** RESET OF THE BUILD : PASSED **"
     println "**"
@@ -49,7 +49,7 @@ try {
 }
 catch (AssertionError ae) {
     def message = ae.getMessage()
+    argMap.testResultsFile.add("! FAILED: ${message}")
     println(message)
-    argMap.testResultsFile.append("! FAILED: ${message}")
 }
 
