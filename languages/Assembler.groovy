@@ -35,7 +35,7 @@ sortedList.each { buildFile ->
 	buildUtils.copySourceFiles(buildFile, props.assembler_srcPDS, 'assembler_dependenciesDatasetMapping', null ,dependencyResolver)
 
 	// Create logical file
-	LogicalFile logicalFile = resolverUtils.createLogicalFile(dependencyResolver, buildFile)
+	LogicalFile logicalFile = buildUtils.createLogicalFile(dependencyResolver, buildFile)
 
 	// create mvs commands
 	String member = CopyToPDS.createMemberName(buildFile)

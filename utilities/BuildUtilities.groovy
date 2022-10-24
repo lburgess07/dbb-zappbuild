@@ -158,7 +158,7 @@ def copySourceFiles(String buildFile, String srcPDS, String dependencyDatasetMap
 	else if (dependencyDatasetMapping && dependencyResolver) {
 		// resolve the logical dependencies to physical files to copy to data sets
 			
-		List<PhysicalDependency> physicalDependencies = resolverUtils.resolveDependencies(dependencyResolver, buildFile)
+		List<PhysicalDependency> physicalDependencies = resolveDependencies(dependencyResolver, buildFile)
 		
 
 		if (props.verbose) println "*** Physical dependencies for $buildFile:"

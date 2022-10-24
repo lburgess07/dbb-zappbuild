@@ -34,7 +34,7 @@ sortedList.each { buildFile ->
 	buildUtils.copySourceFiles(buildFile, props.rexx_srcPDS, 'rexx_dependenciesDatasetMapping', null, dependencyResolver)
 
 	// Get logical file
-	LogicalFile logicalFile = resolverUtils.createLogicalFile(dependencyResolver, buildFile)
+	LogicalFile logicalFile = buildUtils.createLogicalFile(dependencyResolver, buildFile)
 
 	// create mvs commands
 	String member = CopyToPDS.createMemberName(buildFile)

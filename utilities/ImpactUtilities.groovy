@@ -77,7 +77,7 @@ def createImpactBuildList() {
 
 				// list of impacts
 				String impactSearch = props.getFileProperty('impactSearch', changedFile)
-				def impacts = resolverUtils.findImpactedFiles(impactSearch, changedFile)
+				def impacts = buildUtils.findImpactedFiles(impactSearch, changedFile)
 				
 
 				impacts.each { impact ->

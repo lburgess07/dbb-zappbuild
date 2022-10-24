@@ -50,7 +50,7 @@ sortedList.each { buildFile ->
 	}
 
 	// Get logical file
-	LogicalFile logicalFile = resolverUtils.createLogicalFile(dependencyResolver, buildFile)
+	LogicalFile logicalFile = buildUtils.createLogicalFile(dependencyResolver, buildFile)
 
 	// create mvs commands
 	String member = CopyToPDS.createMemberName(buildFile)
