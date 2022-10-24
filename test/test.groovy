@@ -13,8 +13,8 @@ createTestBranch(props)
 
 // flag to control test process
 props.testsSucceeded = 'true'
-def testList = []
-def testResults = []
+def testList = new ArrayList<String>()
+def testResults = new ArrayList<String>()
 
 // run the test scripts
 try {
@@ -36,6 +36,8 @@ finally {
 	// delete test branch
 	deleteTestBranch(props)
 	
+	println(testList)
+	println(testResults)
 	println("\n* Testing Complete *\n")
 	testList.eachWithIndex { testName, index -> 
 		def testNum = index + 1
