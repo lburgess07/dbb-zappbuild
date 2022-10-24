@@ -37,7 +37,7 @@ finally {
 	deleteTestBranch(props)
 	
 	println("\n* Testing Complete *\n")
-	testResultsFile.readLine().eachWithIndex { testData, index -> 
+	testResultsFile.readLines().eachWithIndex { testData, index -> 
 		String[] testNameAndStatus = testData.split(',')
 		String testName = testNameAndStatus.get(0).trim()
 		String testResult = testNameAndStatus.get(1).trim()
