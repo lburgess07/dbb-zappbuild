@@ -25,7 +25,7 @@ try {
 		
 		testOrder.each { script ->
 		   // run the test script	
-		   runScript(new File("testScripts/$script"), ["testResultsFile":testResultsFile])
+		   runScript(new File("testScripts/$script"), ["testResultsFile":testResultsFile.getAbsolutePath()])
 	    }
 	}
 	else {
