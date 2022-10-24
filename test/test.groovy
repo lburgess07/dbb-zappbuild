@@ -38,19 +38,27 @@ finally {
 
 	// if error occurred signal process error
 	if (props.testsSucceeded.toBoolean() == false) {
-		println("*! Not all test scripts completed successfully. Please check console outputs. Send exit signal.")
+		println("*! Not all test scripts completed successfully. Please check console outputs. Send exit signal. !*")
 		System.exit(1)
 	} else {
-		println("* ZAPPBUILD TESTFRAMEWORK COMPLETED. All tests (${props.test_testOrder}) completed successfully.")
+		println("** ZAPPBUILD TESTFRAMEWORK COMPLETED. All tests (${props.test_testOrder}) completed successfully. **")
 	}
 	
 	// Print test results
-	println("\n* Test Results *")
+	println("\nTest Results:")
+	// Set up formatting
+	String leftAlignFormat = "| %-3d | %-15s | %-30s |%n";
+	// Print header
+	System.out.format("+-----+---------------+----------------------------------+%n");
+	System.out.format(" Num  | Test Name     | Result                           |%n");
+	System.out.format("+-----+---------------+----------------------------------+%n");
+	// Print data
 	testList.eachWithIndex { testName, index -> 
 		def testNum = index + 1
-		println "${testNum}. [${testName}]		${testResults.get(index)}"
+		def testResult = testResults.get(index)
+		System.out.format(leftAlignFormat, testNum, testName, testResult)
 	}
-	
+	System.out.format("+-----+---------------+----------------------------------+%n");
 }
 // end script
 
