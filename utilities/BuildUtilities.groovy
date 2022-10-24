@@ -157,8 +157,7 @@ def copySourceFiles(String buildFile, String srcPDS, String dependencyDatasetMap
 	}
 	else if (dependencyDatasetMapping && dependencyResolver) {
 		// resolve the logical dependencies to physical files to copy to data sets
-		
-		resolverUtils = loadScript(new File("ResolverUtilities.groovy"))
+			
 		List<PhysicalDependency> physicalDependencies = resolverUtils.resolveDependencies(dependencyResolver, buildFile)
 		
 
@@ -304,54 +303,6 @@ def updateBuildResult(Map args) {
 
 	}
 }
-
-/*
- * createDependencyResolver - Creates a dependency resolver using resolution rules declared
- * in a build or file property (json format).
- */
-// def createDependencyResolver(String buildFile, String rules) {
-// 	if (props.verbose) println "*** Creating dependency resolver for $buildFile with $rules rules"
-
-// 	// create a dependency resolver for the build file
-// 	DependencyResolver resolver = new DependencyResolver().file(buildFile)
-// 			.sourceDir(props.workspace)
-	
-// 	// add scanner if userBuild Dep File not provided, or not a user build
-// 	if (!props.userBuildDependencyFile || !props.userBuild)
-// 		resolver.setScanner(getScanner(buildFile))
-
-// 	// add resolution rules
-// 	if (rules)
-// 		resolver.setResolutionRules(parseResolutionRules(rules))
-
-// 	return resolver
-// }
-
-// def parseResolutionRules(String json) {
-// 	List<ResolutionRule> rules = new ArrayList<ResolutionRule>()
-// 	JsonSlurper slurper = new groovy.json.JsonSlurper()
-// 	List jsonRules = slurper.parseText(json)
-// 	if (jsonRules) {
-// 		jsonRules.each { jsonRule ->
-// 			ResolutionRule resolutionRule = new ResolutionRule()
-// 			resolutionRule.library(jsonRule.library)
-// 			resolutionRule.lname(jsonRule.lname)
-// 			resolutionRule.category(jsonRule.category)
-// 			if (jsonRule.searchPath) {
-// 				jsonRule.searchPath.each { jsonPath ->
-// 					DependencyPath dependencyPath = new DependencyPath()
-// 					dependencyPath.collection(jsonPath.collection)
-// 					dependencyPath.sourceDir(jsonPath.sourceDir)
-// 					dependencyPath.directory(jsonPath.directory)
-// 					resolutionRule.path(dependencyPath)
-// 				}
-// 			}
-// 			rules << resolutionRule
-// 		}
-// 	}
-// 	return rules
-// }
-
 
 
 /*
@@ -795,5 +746,62 @@ def loadFileLevelPropertiesFromFile(List<String> buildList) {
 			}
 		}
 	}
+}
+
+
+/**
+ * Method to create the logical file using SearchPathDependencyResolver
+ * 
+ *  evaluates if it should resolve file flags for resolved dependencies
+ * 
+ * @param spDependencyResolver
+ * @param buildFile
+ * @return
+ */
+
+def createLogicalFile(SearchPathDependencyResolver spDependencyResolver, String buildFile) {
+	
+	LogicalFile logicalFile
+	
+	if (props.resolveSubsystems && props.resolveSubsystems.toBoolean()) // include resolved dependencies to define file flags of logicalFile
+		logicalFile = spDependencyResolver.resolveSubsystems(buildFile,props.workspace)
+	else
+		logicalFile = SearchPathDependencyResolver.getLogicalFile(buildFile,props.workspace)
+
+	return logicalFile
+
+}
+
+/**
+ * 
+ * @param dependencySearch
+ * @return SearchPathDependencyResolver
+ */
+// def createSearchPathDependencyResolver(String dependencySearch) {
+// 	return new SearchPathDependencyResolver(dependencySearch)
+// }
+
+def findImpactedFiles(String impactSearch, String changedFile) {
+	
+	List<String> collections = new ArrayList<String>()
+	collections.add(props.applicationCollectionName)
+	collections.add(props.applicationOutputsCollectionName)
+	
+	if (props.verbose)
+		println ("*** Creating SearchPathImpactFinder with collections " + collections + " and impactSearch configuration " + impactSearch)
+	
+	def finder = new SearchPathImpactFinder(impactSearch, collections)
+	
+	// Find all files impacted by the changed file
+	impacts = finder.findImpactedFiles(changedFile, props.workspace)
+	return impacts
+}
+
+def resolveDependencies(SearchPathDependencyResolver dependencyResolver, String buildFile) {
+	if (props.verbose) {
+		println "*** Resolution rules for $buildFile:"
+		println dependencyResolver.getSearchPath()
+	}
+	return dependencyResolver.resolveDependencies(buildFile, props.workspace)
 }
 

@@ -19,7 +19,7 @@ import java.util.regex.*
 
 def createImpactBuildList() {
 	MetadataStore metadataStore = MetadataStoreFactory.getMetadataStore()
-	resolverUtils = loadScript(new File("ResolverUtilities.groovy")) 
+	 
 	
 	// local variables
 	Set<String> changedFiles = new HashSet<String>()
