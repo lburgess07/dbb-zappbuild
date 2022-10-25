@@ -114,7 +114,7 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 		props.testsSucceeded = false
 
 		assertionList << message;
-		println("!* FAILED IMPACT BUILD TEST - FILE RENAME: ${message}")
+		println("\n!* FAILED IMPACT BUILD TEST - FILE RENAME: ${message}")
 		if (props.verbose) e.printStackTrace()
 		println "\n***"
 		println "OUTPUT STREAM: \n${outputStream} \n"

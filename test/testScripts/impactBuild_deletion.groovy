@@ -149,7 +149,7 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 		props.testsSucceeded = false
 
 		assertionList << message;
-		println("!* FAILED IMPACT BUILD TEST - FILE DELETE: ${message}")
+		println("\n!* FAILED IMPACT BUILD TEST - FILE DELETE: ${message}")
 		if (props.verbose) e.printStackTrace()
 		println "\n***"
 		println "OUTPUT STREAM: \n${outputStream} \n"

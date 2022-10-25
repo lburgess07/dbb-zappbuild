@@ -118,7 +118,7 @@ def validateMergeBuild(String changedFile, PropertyMappings filesBuiltMappings, 
 		props.testsSucceeded = false
 
 		assertionList << message;
-		println("!* FAILED MERGE BUILD TEST: ${message}")
+		println("\n!* FAILED MERGE BUILD TEST: ${message}")
 		if (props.verbose) e.printStackTrace()
 		println "\n***"
 		println "OUTPUT STREAM: \n${outputStream} \n"
