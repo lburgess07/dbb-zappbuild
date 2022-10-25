@@ -50,7 +50,7 @@ catch (AssertionError e) {
     def message = "*! FAILED: " + e.getMessage()
     argMap.testResults.add(message)
     println message
-    //e.printStackTrace()
+    if (props.verbose) e.printStackTrace()
     println "OUTPUT STREAM: \n${outputStream}\n"
 }
 

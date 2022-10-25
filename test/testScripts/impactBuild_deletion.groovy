@@ -118,20 +118,20 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 		
 		
 		// Validate clean build
-		assert outputStream.contains("Build State : CLEAN") : "IMPACT BUILD STATE NOT CLEAN FOR DELETED FILE $deleteFile"
+		assert outputStream.contains("Build State : CLEAN") : "BUILD STATE NOT CLEAN FOR DELETED FILE $deleteFile"
 
 		// Validate message that deleted file was deleted from collections
-		assert outputStream.contains("*** Deleting logical file for ${props.app}/${deleteFile}") : "DID NOT FIND DELETION OF LOGICAL FILE IN VERBOSE OUTPUT FOR DELETED FILE $deleteFile"
+		assert outputStream.contains("*** Deleting logical file for ${props.app}/${deleteFile}") : "DID NOT FIND DELETION OF LOGICAL FILE IN OUTPUT FOR DELETED FILE $deleteFile"
 		
 		// Validate creation of the Delete Record 
-		assert outputStream.contains("** Create deletion record for file") : "DID NOT FIND CREATION OF DELETE RECORD FOR DELETED FILE $deleteFile "
+		assert outputStream.contains("** Create deletion record for file") : "CREATION OF DELETION RECORD NOT FOUND IN OUTPUT FOR DELETED FILE $deleteFile "
 		
 		expectedDeletedFilesList.each { deletedOutput ->
 
-			assert outputStream.contains("** Document deletion ${props.hlq}.${deletedOutput} for file") : "IMPACT BUILD FOR DELETION OF $deleteFile DID NOT FIND CREATION OF DELETE RECORD"
+			assert outputStream.contains("** Document deletion ${props.hlq}.${deletedOutput} for file") : "DOCUMENT DELETE RECORD CREATION NOT FOUND IN OUTPUT FOR DELETED FILE $deleteFile"
 
 			// Validate deletion of output
-			assert outputStream.contains("** Deleting ${props.hlq}.${deletedOutput}") : "IMPACT BUILD FOR DELETION OF $deleteFile DID NOT FIND DELETION OF LOAD MODULE"
+			assert outputStream.contains("** Deleting ${props.hlq}.${deletedOutput}") : "DELETION OF LOAD MODULE NOT FOUND IN OUTPUT FOR DELETED FILE $deleteFile"
 
 		}
 		
@@ -146,7 +146,7 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 		props.testsSucceeded = false
 
 		println message
-		//e.printStackTrace()
+		if (props.verbose) e.printStackTrace()
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (DELETION) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}"

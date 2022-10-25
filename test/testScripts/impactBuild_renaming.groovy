@@ -88,17 +88,17 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 
 	try{
 		// Validate clean build
-		assert outputStream.contains("Build State : CLEAN") : "IMPACT BUILD STATE NOT CLEAN FOR RENAMED FILE $renameFile"
+		assert outputStream.contains("Build State : CLEAN") : "BUILD STATE NOT CLEAN FOR RENAMED FILE $renameFile"
 
 		// Validate expected number of files built
 		def numImpactFiles = expectedFilesBuiltList.size()
-		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles} FOR RENAMED FILE $renameFile"
+		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "TOTAL FILES PROCESSED DOES NOT EQUAL EXCPECTED '${numImpactFiles}' FOR RENAMED FILE $renameFile"
 
 		// Validate expected built files in output stream
-		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "IMPACT BUILD FOR $renameFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}"
+		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "LIST OF BUILT FILES DOES NOT MATCH EXPECTED LIST '${expectedFilesBuiltList}' FOR RENAMED FILE $renameFile"
 
 		// Validate message that file renamed was deleted from collections
-		assert outputStream.contains("*** Deleting renamed logical file for ${props.app}/${renameFile}") : "IMPACT BUILD FOR $renameFile DID NOT FIND DELETION OF LOGICAL FILE"
+		assert outputStream.contains("*** Deleting renamed logical file for ${props.app}/${renameFile}") : "DELETION OF LOGICAL FILE MISSING FROM VERBOSE OUTPUT FOR RENAMED FILE $renameFile"
 		
 		argMap.testResults.add("PASSED")
 		println "**"
@@ -111,7 +111,7 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 		props.testsSucceeded = false
 
 		println message
-		//e.printStackTrace()
+		if (props.verbose) e.printStackTrace()
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}\n" // print outputstream to console for debugging

@@ -108,10 +108,10 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 
 		// Validate expected number of files built
 		def numImpactFiles = expectedFilesBuiltList.size()
-		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "IMPACT BUILD TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles} FOR CHANGED PROPERTY FILE $changedFile "
+		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles} FOR CHANGED PROPERTY FILE $changedFile "
 
 		// Validate expected built files in output stream
-		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "IMPACT BUILD DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList} FOR CHANGED PROPERTY FILE $changedFile"
+		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "LIST OF BUILT FILES DOES NOT MATCH EXPECTED LIST ${expectedFilesBuiltList} FOR CHANGED PROPERTY FILE $changedFile"
 		
 		argMap.testResults.add("PASSED")
 		println "**"
@@ -124,7 +124,7 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 		props.testsSucceeded = false
 
 		println message
-		//e.printStackTrace()
+		if (props.verbose) e.printStackTrace()
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}\n"
