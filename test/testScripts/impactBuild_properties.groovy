@@ -123,7 +123,7 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 		argMap.testResults.add(message)
 		props.testsSucceeded = false
 
-		println message
+		println message + "\n${e.getStackTrace}\n"
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}\n"

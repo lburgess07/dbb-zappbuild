@@ -110,7 +110,7 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 		argMap.testResults.add(message)
 		props.testsSucceeded = false
 
-		println message
+		println message + "\n${e.getStackTrace}\n"
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}\n" // print outputstream to console for debugging

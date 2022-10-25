@@ -145,7 +145,7 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 		argMap.testResults.add(message)
 		props.testsSucceeded = false
 
-		println message
+		println message + "\n${e.getStackTrace}\n"
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (DELETION) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}"
