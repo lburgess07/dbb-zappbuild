@@ -104,14 +104,14 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 	
 	try{
 		// Validate clean build
-		assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD STATE NOT CLEAN FOR CHANGED PROPERTY FILE $changedFile"
+		assert outputStream.contains("Build State : CLEAN") : "IMPACT BUILD STATE NOT CLEAN FOR CHANGED PROPERTY FILE $changedFile"
 
 		// Validate expected number of files built
 		def numImpactFiles = expectedFilesBuiltList.size()
-		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "*! IMPACT BUILD TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles} FOR CHANGED PROPERTY FILE $changedFile "
+		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "IMPACT BUILD TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles} FOR CHANGED PROPERTY FILE $changedFile "
 
 		// Validate expected built files in output stream
-		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList} FOR CHANGED PROPERTY FILE $changedFile"
+		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "IMPACT BUILD DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList} FOR CHANGED PROPERTY FILE $changedFile"
 		
 		argMap.testResults.add("PASSED")
 		println "**"
@@ -119,13 +119,13 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 		println "**"
 	}
 	catch(AssertionError e) {
-		def message = e.getMessage()
-		argMap.testResults.add("! FAILED: ${message}")
+		def message = "*! FAILED: " + e.getMessage()
+		argMap.testResults.add(message)
 		props.testsSucceeded = false
 
+		println message
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**\n"
-		println  message
 		println "OUTPUT STREAM: \n${outputStream}\n"
 		println "\n**END OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**"
 		println "***"

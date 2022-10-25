@@ -88,17 +88,17 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 
 	try{
 		// Validate clean build
-		assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD STATE NOT CLEAN FOR $renameFile"
+		assert outputStream.contains("Build State : CLEAN") : "IMPACT BUILD STATE NOT CLEAN FOR RENAMED FILE $renameFile"
 
 		// Validate expected number of files built
 		def numImpactFiles = expectedFilesBuiltList.size()
-		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "*! IMPACT BUILD FOR $renameFile TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles}"
+		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles} FOR RENAMED FILE $renameFile"
 
 		// Validate expected built files in output stream
-		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD FOR $renameFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}"
+		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "IMPACT BUILD FOR $renameFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}"
 
 		// Validate message that file renamed was deleted from collections
-		assert outputStream.contains("*** Deleting renamed logical file for ${props.app}/${renameFile}") : "*! IMPACT BUILD FOR $renameFile DID NOT FIND DELETION OF LOGICAL FILE"
+		assert outputStream.contains("*** Deleting renamed logical file for ${props.app}/${renameFile}") : "IMPACT BUILD FOR $renameFile DID NOT FIND DELETION OF LOGICAL FILE"
 		
 		argMap.testResults.add("PASSED")
 		println "**"
@@ -106,13 +106,13 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 		println "**"
 	}
 	catch(AssertionError e) {
-		def message = e.getMessage()
-		argMap.testResults.add("! FAILED: ${message}")
+		def message = "*! FAILED: " + e.getMessage()
+		argMap.testResults.add(message)
 		props.testsSucceeded = false
 
+		println message
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**\n"
-		println message
 		println "OUTPUT STREAM: \n${outputStream}\n" // print outputstream to console for debugging
 		println "\n**END OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**"
 		println "***"
