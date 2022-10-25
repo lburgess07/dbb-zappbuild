@@ -54,7 +54,7 @@ try {
 			'-c',
 			impactBuildCommand.join(" ")
 		].execute()
-		process.waitForProcessOutput(outputStream, System.err)
+		process.waitForProcessOutput(outputStream, outputStream)
 
 		// validate build results
 		validateImpactBuild(renameFile, filesBuiltMappings, outputStream)
@@ -78,7 +78,7 @@ def renameAndCommit(String renameFile, String newFilename) {
 """
 	def task = ['bash', '-c', commands].execute()
 	def outputStream = new StringBuffer();
-	task.waitForProcessOutput(outputStream, System.err)
+	task.waitForProcessOutput(outputStream, outputStream)
 }
 
 def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, StringBuffer outputStream) {
@@ -111,7 +111,7 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 		props.testsSucceeded = false
 
 		println message
-		e.printStackTrace()
+		//e.printStackTrace()
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}\n" // print outputstream to console for debugging

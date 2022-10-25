@@ -58,7 +58,7 @@ try {
 		println "** Executing ${fullBuildCommand.join(" ")}"
 		def outputStream = new StringBuffer()
 		def process = ['bash', '-c', fullBuildCommand.join(" ")].execute()
-		process.waitForProcessOutput(outputStream, System.err)
+		process.waitForProcessOutput(outputStream, outputStream)
 		
 		
 		println "\n** Running impact build test for changed file $changedPropFile"
@@ -70,7 +70,7 @@ try {
 		println "** Executing ${impactBuildCommand.join(" ")}"
 		outputStream = new StringBuffer()
 		process = ['bash', '-c', impactBuildCommand.join(" ")].execute()
-		process.waitForProcessOutput(outputStream, System.err)
+		process.waitForProcessOutput(outputStream, outputStream)
 		
 		// validate build results
 		validateImpactBuild(changedPropFile, filesBuiltMappings, outputStream)
@@ -94,7 +94,7 @@ def copyAndCommit(String changedFile) {
 """
 	def task = ['bash', '-c', commands].execute()
 	def outputStream = new StringBuffer();
-	task.waitForProcessOutput(outputStream, System.err)
+	task.waitForProcessOutput(outputStream, outputStream)
 }
 
 def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings, StringBuffer outputStream) {
@@ -124,7 +124,7 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 		props.testsSucceeded = false
 
 		println message
-		e.printStackTrace()
+		//e.printStackTrace()
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}\n"

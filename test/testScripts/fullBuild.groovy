@@ -32,7 +32,7 @@ fullBuildCommand << "--fullBuild"
 println "** Executing ${fullBuildCommand.join(" ")}"
 def process = ['bash', '-c', fullBuildCommand.join(" ")].execute()
 def outputStream = new StringBuffer();
-process.waitForProcessOutput(outputStream, System.err)
+process.waitForProcessOutput(outputStream, outputStream)
 
 //Validate build results
 println "** Validating full build results"

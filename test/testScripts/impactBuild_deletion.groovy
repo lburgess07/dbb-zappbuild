@@ -64,7 +64,7 @@ try {
 		'-c',
 		fullBuildCommand.join(" ")
 	].execute()
-	process.waitForProcessOutput(outputStream, System.err)
+	process.waitForProcessOutput(outputStream, outputStream)
 	
 	deleteFiles.each{ deleteFile ->
 		
@@ -81,7 +81,7 @@ try {
 			'-c',
 			impactBuildCommand.join(" ")
 		].execute()
-		process.waitForProcessOutput(outputStream, System.err)
+		process.waitForProcessOutput(outputStream, outputStream)
 
 		// validate build results
 		validateImpactBuild(deleteFile, outputsDeletedMappings, outputStream)
@@ -105,7 +105,7 @@ def deleteAndCommit(String deleteFile) {
 """
 	def task = ['bash', '-c', commands].execute()
 	def outputStream = new StringBuffer();
-	task.waitForProcessOutput(outputStream, System.err)
+	task.waitForProcessOutput(outputStream, outputStream)
 }
 
 def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappings, StringBuffer outputStream) {
@@ -146,7 +146,7 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 		props.testsSucceeded = false
 
 		println message
-		e.printStackTrace()
+		//e.printStackTrace()
 		println "\n***"
 		println "**START OF FAILED IMPACT BUILD (DELETION) TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}"

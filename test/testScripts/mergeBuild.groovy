@@ -48,7 +48,7 @@ try {
 		println "** Executing ${mergeBuildCommand.join(" ")}"
 		def outputStream = new StringBuffer()
 		def process = ['bash', '-c', mergeBuildCommand.join(" ")].execute()
-		process.waitForProcessOutput(outputStream, System.err)
+		process.waitForProcessOutput(outputStream, outputStream)
 		
 		// validate build results
 		validateMergeBuild(changedFile, filesBuiltMappings, outputStream)
@@ -71,7 +71,7 @@ def writePropsFile() {
 """
 		def task = ['bash', '-c', commands].execute()
 		def outputStream = new StringBuffer();
-		task.waitForProcessOutput(outputStream, System.err)
+		task.waitForProcessOutput(outputStream, outputStream)
 	
 }
 
@@ -85,7 +85,7 @@ def copyAndCommit(String changedFile) {
 """
 	def task = ['bash', '-c', commands].execute()
 	def outputStream = new StringBuffer();
-	task.waitForProcessOutput(outputStream, System.err)
+	task.waitForProcessOutput(outputStream, outputStream)
 }
 
 def validateMergeBuild(String changedFile, PropertyMappings filesBuiltMappings, StringBuffer outputStream) {
@@ -115,7 +115,7 @@ def validateMergeBuild(String changedFile, PropertyMappings filesBuiltMappings, 
 		props.testsSucceeded = false
 
 		println message
-		e.printStackTrace()
+		//e.printStackTrace()
 		println "\n***"
 		println "**START OF FAILED MERGED BUILD TEST RESULTS**\n"
 		println "OUTPUT STREAM: \n${outputStream}\n"
