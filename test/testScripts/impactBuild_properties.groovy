@@ -77,6 +77,11 @@ try {
 }
 finally {
 	cleanUpDatasets()
+
+	if (assertionList.size() == 0)
+		argMap.testResults.add("PASSED")
+	else
+		argMap.testResults.add("!* FAILED: ${String.join(',', assertionList)}")
 }
 // script end
 
@@ -113,22 +118,20 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 		// Validate expected built files in output stream
 		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "LIST OF BUILT FILES DOES NOT MATCH EXPECTED LIST ${expectedFilesBuiltList} FOR CHANGED PROPERTY FILE $changedFile"
 		
-		argMap.testResults.add("PASSED")
+
 		println "**"
 		println "** IMPACT BUILD ON PROPERTY CHANGE : PASSED FOR $changedFile **"
 		println "**"
 	}
 	catch(AssertionError e) {
-		def message = "*! FAILED: " + e.getMessage()
-		argMap.testResults.add(message)
+		def message = e.getMessage()
 		props.testsSucceeded = false
 
-		println message
+		assertionList << message;
+		println("!* FAILED IMPACT BUILD TEST - PROPERTIES: ${message}")
 		if (props.verbose) e.printStackTrace()
 		println "\n***"
-		println "**START OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**\n"
-		println "OUTPUT STREAM: \n${outputStream}\n"
-		println "\n**END OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**"
+		println "OUTPUT STREAM: \n${outputStream} \n"
 		println "***"
  }
 }

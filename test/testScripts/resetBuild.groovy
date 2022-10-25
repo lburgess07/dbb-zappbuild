@@ -38,7 +38,9 @@ process.waitForProcessOutput(outputStream, outputStream)
 println "** Validating reset build"
 // Validate clean reset build
 try {
-    assert false && outputStream.contains("Deleting collection") && ("Deleting build result group") && ("Build finished") : "RESET OF THE BUILD FAILED"
+    assert outputStream.contains("Deleting collection") : "COLLECTION DELETION NOT FOUND IN OUTPUT"
+    assert outputStream.contains("Deleting build result group") : "BUILD GROUP DELETION NOT FOUND IN OUTPUT"
+    assert outputStream.contains("Build finished") : "RESET OF THE BUILD FAILED"
 
     argMap.testResults.add("PASSED")
     println "**"
@@ -47,7 +49,7 @@ try {
     
 }
 catch (AssertionError e) {
-    def message = "*! FAILED: " + e.getMessage()
+    def message = "!* FAILED: " + e.getMessage()
     argMap.testResults.add(message)
     println message
     if (props.verbose) e.printStackTrace()

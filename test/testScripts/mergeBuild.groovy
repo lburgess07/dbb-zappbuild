@@ -56,6 +56,11 @@ try {
 }
 finally {
 	cleanUpDatasets()
+
+	if (assertionList.size() == 0)
+		argMap.testResults.add("PASSED")
+	else
+		argMap.testResults.add("!* FAILED: ${String.join(',', assertionList)}")
 }
 // script end  
 
@@ -104,22 +109,19 @@ def validateMergeBuild(String changedFile, PropertyMappings filesBuiltMappings, 
 	// Validate expected built files in output stream
 	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "MERGE BUILD FOR $changedFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}"
 	
-	argMap.testResults.add("PASSED")
 	println "**"
 	println "** MERGED BUILD TEST : PASSED FOR $changedFile **"
 	println "**"
     }
     catch(AssertionError e) {
-		def message = "*! FAILED: " + e.getMessage()
-		argMap.testResults.add(message)
+		def message = e.getMessage()
 		props.testsSucceeded = false
 
-		println message
+		assertionList << message;
+		println("!* FAILED MERGE BUILD TEST: ${message}")
 		if (props.verbose) e.printStackTrace()
 		println "\n***"
-		println "**START OF FAILED MERGED BUILD TEST RESULTS**\n"
-		println "OUTPUT STREAM: \n${outputStream}\n"
-		println "\n**END OF FAILED MERGED BUILD TEST RESULTS**"
+		println "OUTPUT STREAM: \n${outputStream} \n"
 		println "***"
  }
 }

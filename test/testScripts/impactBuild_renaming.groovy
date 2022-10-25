@@ -62,6 +62,11 @@ try {
 }
 finally {
 	cleanUpDatasets()
+
+	if (assertionList.size() == 0)
+		argMap.testResults.add("PASSED")
+	else
+		argMap.testResults.add("!* FAILED: ${String.join(',', assertionList)}")
 }
 // script end
 
@@ -100,22 +105,19 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 		// Validate message that file renamed was deleted from collections
 		assert outputStream.contains("*** Deleting renamed logical file for ${props.app}/${renameFile}") : "DELETION OF LOGICAL FILE MISSING FROM VERBOSE OUTPUT FOR RENAMED FILE $renameFile"
 		
-		argMap.testResults.add("PASSED")
 		println "**"
 		println "** IMPACT BUILD TEST - FILE RENAME : PASSED FOR RENAMING $renameFile **"
 		println "**"
 	}
 	catch(AssertionError e) {
-		def message = "*! FAILED: " + e.getMessage()
-		argMap.testResults.add(message)
+		def message = e.getMessage()
 		props.testsSucceeded = false
 
-		println message
+		assertionList << message;
+		println("!* FAILED IMPACT BUILD TEST - FILE RENAME: ${message}")
 		if (props.verbose) e.printStackTrace()
 		println "\n***"
-		println "**START OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**\n"
-		println "OUTPUT STREAM: \n${outputStream}\n" // print outputstream to console for debugging
-		println "\n**END OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**"
+		println "OUTPUT STREAM: \n${outputStream} \n"
 		println "***"
 	}
 }

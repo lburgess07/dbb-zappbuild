@@ -42,35 +42,38 @@ def expectedFilesBuiltList = props.fullBuild_expectedFilesBuilt.split(',')
 
 try {
 	// Validate clean build
-	assert outputStream.contains("Build State : CLEAN") : "FULL BUILD STATE NOT CLEAN"
+	assert outputStream.contains("Build State : CLEAN") : "BUILD STATE NOT CLEAN"
 
 	// Validate expected number of files built
 	def numFullFiles = expectedFilesBuiltList.size()
-	assert outputStream.contains("Total files processed : ${numFullFiles}") : "TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numFullFiles}"
+	assert outputStream.contains("Total files processed : ${numFullFiles}") : "TOTAL FILES PROCESSED DOES NOT EQUAL EXPECTED '${numFullFiles}'"
 
 	// Validate expected built files in output stream
-	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "FILES PROCESSED DO NOT CONTAIN THE LIST OF FILES PASSED: ${expectedFilesBuiltList}"
+	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "FILES PROCESSED DOES NOT MATCH EXPECTED '${expectedFilesBuiltList}'"
 	
-	argMap.testResults.add("PASSED")
 	println "**"
 	println "** FULL BUILD TEST : PASSED **"
 	println "**"
 }
 catch(AssertionError e) {
-	def message = "*! FAILED: " + e.getMessage()
-	argMap.testResults.add(message)
+	def message = e.getMessage()
 	props.testsSucceeded = false
 
-	println message
+	assertionList << message;
+	println("!* FAILED FULL BUILD TEST: ${message}")
 	if (props.verbose) e.printStackTrace()
 	println "\n***"
-	println "**START OF FAILED FULL BUILD TEST RESULTS**\n"
 	println "OUTPUT STREAM: \n${outputStream} \n"
-	println "\n**END OF FAILED FULL BUILD **"
 	println "***"
 }
 finally {
 	cleanUpDatasets()
+
+	if (assertionList.size() == 0)
+		argMap.testResults.add("PASSED")
+	else
+		argMap.testResults.add("!* FAILED: ${String.join(',', assertionList)}")
+	
 }
 
 // script end

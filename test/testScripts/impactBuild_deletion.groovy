@@ -89,6 +89,11 @@ try {
 }
 finally {
 	cleanUpDatasets()
+
+	if (assertionList.size() == 0)
+		argMap.testResults.add("PASSED")
+	else
+		argMap.testResults.add("!* FAILED: ${String.join(',', assertionList)}")
 }
 // script end
 
@@ -135,22 +140,19 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 
 		}
 		
-		argMap.testResults.add("PASSED")
 		println "**"
 		println "** IMPACT BUILD TEST - FILE DELETE : PASSED FOR DELETING $deleteFile **"
 		println "**"
 	}
 	catch(AssertionError e) {
-		def message = "*! FAILED: " + e.getMessage()
-		argMap.testResults.add(message)
+		def message = e.getMessage()
 		props.testsSucceeded = false
 
-		println message
+		assertionList << message;
+		println("!* FAILED IMPACT BUILD TEST - FILE DELETE: ${message}")
 		if (props.verbose) e.printStackTrace()
 		println "\n***"
-		println "**START OF FAILED IMPACT BUILD (DELETION) TEST RESULTS**\n"
-		println "OUTPUT STREAM: \n${outputStream}"
-		println "\n**END OF FAILED IMPACT BUILD (DELETION) TEST RESULTS**"
+		println "OUTPUT STREAM: \n${outputStream} \n"
 		println "***"
 	}
 }
