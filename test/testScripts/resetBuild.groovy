@@ -49,7 +49,8 @@ try {
 catch (AssertionError e) {
     def message = "*! FAILED: " + e.getMessage()
     argMap.testResults.add(message)
-    println message + "\n${e.getStackTrace}\n"
+    println message
+    e.printStackTrace()
     println "OUTPUT STREAM: \n${outputStream}\n"
 }
 
