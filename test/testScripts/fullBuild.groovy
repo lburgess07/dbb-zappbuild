@@ -62,7 +62,7 @@ catch(AssertionError e) {
 	props.testsSucceeded = false
 
 	println message
-e.printStackTrace()
+	//e.printStackTrace()
 	println "\n***"
 	println "**START OF FAILED FULL BUILD TEST RESULTS**\n"
 	println "OUTPUT STREAM: \n${outputStream} \n"

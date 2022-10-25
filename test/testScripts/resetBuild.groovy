@@ -32,7 +32,7 @@ resetBuildCommand << "--reset"
 println "** Executing ${resetBuildCommand.join(" ")}"
 def process = ['bash', '-c', resetBuildCommand.join(" ")].execute()
 def outputStream = new StringBuffer();
-process.waitForProcessOutput(outputStream, System.err)
+process.waitForProcessOutput(outputStream, outputStream)
 
 // Validate reset build
 println "** Validating reset build"
@@ -50,7 +50,7 @@ catch (AssertionError e) {
     def message = "*! FAILED: " + e.getMessage()
     argMap.testResults.add(message)
     println message
-    e.printStackTrace()
+    //e.printStackTrace()
     println "OUTPUT STREAM: \n${outputStream}\n"
 }
 
