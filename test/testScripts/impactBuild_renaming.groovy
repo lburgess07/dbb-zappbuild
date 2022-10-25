@@ -62,13 +62,6 @@ try {
 }
 finally {
 	cleanUpDatasets()
-	if (assertionList.size()>0) {
-		println "\n***"
-		println "**START OF FAILED IMPACT BUILD TEST RESULTS**\n"
-		println "*FAILED IMPACT BUILD TEST RESULTS*\n" + assertionList
-		println "\n**END OF FAILED IMPACT BUILD TEST RESULTS**"
-		println "***"
-	}
 }
 // script end
 
@@ -95,17 +88,17 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 
 	try{
 		// Validate clean build
-		assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD FAILED FOR $renameFile\nOUTPUT STREAM:\n$outputStream\n"
+		assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD STATE NOT CLEAN FOR $renameFile"
 
 		// Validate expected number of files built
 		def numImpactFiles = expectedFilesBuiltList.size()
-		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "*! IMPACT BUILD FOR $renameFile TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles}\nOUTPUT STREAM:\n$outputStream\n"
+		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "*! IMPACT BUILD FOR $renameFile TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles}"
 
 		// Validate expected built files in output stream
-		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD FOR $renameFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}\nOUTPUT STREAM:\n$outputStream\n"
+		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD FOR $renameFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}"
 
 		// Validate message that file renamed was deleted from collections
-		assert outputStream.contains("*** Deleting renamed logical file for ${props.app}/${renameFile}") : "*! IMPACT BUILD FOR $renameFile DO NOT FIND DELETION OF LOGICAL FILE\nOUTPUT STREAM:\n$outputStream\n"
+		assert outputStream.contains("*** Deleting renamed logical file for ${props.app}/${renameFile}") : "*! IMPACT BUILD FOR $renameFile DID NOT FIND DELETION OF LOGICAL FILE"
 		
 		argMap.testResults.add("PASSED")
 		println "**"
@@ -113,10 +106,16 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 		println "**"
 	}
 	catch(AssertionError e) {
-		argMap.testResults.add("! FAILED")
-		def result = e.getMessage()
-		assertionList << result;
+		def message = e.getMessage()
+		argMap.testResults.add("! FAILED: ${message}")
 		props.testsSucceeded = false
+
+		println "\n***"
+		println "**START OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**\n"
+		println message
+		println "OUTPUT STREAM: \n${outputStream}\n" // print outputstream to console for debugging
+		println "\n**END OF FAILED IMPACT BUILD (RENAMING) TEST RESULTS**"
+		println "***"
 	}
 }
 def cleanUpDatasets() {

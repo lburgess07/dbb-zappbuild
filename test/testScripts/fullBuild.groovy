@@ -42,14 +42,14 @@ def expectedFilesBuiltList = props.fullBuild_expectedFilesBuilt.split(',')
 
 try {
 	// Validate clean build
-	assert outputStream.contains("Build State : CLEAN") : "*! FULL BUILD FAILED\nOUTPUT STREAM:\n$outputStream\n"
+	assert outputStream.contains("Build State : CLEAN") : "*! FULL BUILD STATE NOT CLEAN"
 
 	// Validate expected number of files built
 	def numFullFiles = expectedFilesBuiltList.size()
-	assert outputStream.contains("Total files processed : ${numFullFiles}") : "*! TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numFullFiles}\nOUTPUT STREAM:\n$outputStream\n"
+	assert outputStream.contains("Total files processed : ${numFullFiles}") : "*! TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numFullFiles}"
 
 	// Validate expected built files in output stream
-	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! FILES PROCESSED IN THE FULL BUILD DOES NOT CONTAIN THE LIST OF FILES PASSED ${expectedFilesBuiltList}\nOUTPUT STREAM:\n$outputStream\n"
+	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! FILES PROCESSED DO NOT CONTAIN THE LIST OF FILES PASSED ${expectedFilesBuiltList}"
 	
 	argMap.testResults.add("PASSED")
 	println "**"
@@ -57,21 +57,19 @@ try {
 	println "**"
 }
 catch(AssertionError e) {
-	argMap.testResults.add("! FAILED")
-	def result = e.getMessage()
-	assertionList << result;
+	def message = e.getMessage()
+	argMap.testResults.add("! FAILED: ${message}")
 	props.testsSucceeded = false
+
+	println "\n***"
+	println "**START OF FAILED FULL BUILD TEST RESULTS**\n"
+	println message
+	println "OUTPUT STREAM: \n${outputStream} \n"
+	println "\n**END OF FAILED FULL BUILD **"
+	println "***"
 }
 finally {
 	cleanUpDatasets()
-	if (assertionList.size()>0) {
-		println "\n***"
-		println "**START OF FAILED FULL BUILD TEST RESULTS**\n"
-		println "*FAILED FULL BUILD RESULTS*\n" + assertionList
-		println "\n**END OF FAILED FULL BUILD **"
-		println "***"
-  }
-	
 }
 
 // script end

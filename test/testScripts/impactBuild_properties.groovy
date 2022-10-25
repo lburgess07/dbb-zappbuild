@@ -77,13 +77,6 @@ try {
 }
 finally {
 	cleanUpDatasets()
-	if (assertionList.size()>0) {
-		println "\n***"
-	println "**START OF FAILED IMPACT BUILD ON PROPERTY CHANGE TEST RESULTS**\n"
-	println "*FAILED IMPACT BUILD ON PROPERT CHANGE TEST  RESULTS*\n" + assertionList
-	println "\n**END OF FAILED IMPACT BUILD ON PROPERTY CHANGE TEST RESULTS**"
-	println "***"
-  }
 }
 // script end
 
@@ -97,7 +90,7 @@ def copyAndCommit(String changedFile) {
 	cp ${props.zAppBuildDir}/test/applications/${props.app}/${changedFile} ${props.appLocation}/${changedFile}
 	cd ${props.appLocation}/
 	git add .
-	git commit . -m "edited program file"
+	git commit . -m "edited property file"
 """
 	def task = ['bash', '-c', commands].execute()
 	def outputStream = new StringBuffer();
@@ -110,26 +103,32 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 	def expectedFilesBuiltList = filesBuiltMappings.getValue(changedFile).split(',')
 	
 	try{
-	// Validate clean build
-	assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD FAILED FOR CHANGED PROPERTY $changedFile\nOUTPUT STREAM:\n$outputStream\n"
+		// Validate clean build
+		assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD STATE NOT CLEAN FOR CHANGED PROPERTY FILE $changedFile"
 
-	// Validate expected number of files built
-	def numImpactFiles = expectedFilesBuiltList.size()
-	assert outputStream.contains("Total files processed : ${numImpactFiles}") : "*! IMPACT BUILD FAILED FOR CHANGED PROPERTY  $changedFile TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles}\nOUTPUT STREAM:\n$outputStream\n"
+		// Validate expected number of files built
+		def numImpactFiles = expectedFilesBuiltList.size()
+		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "*! IMPACT BUILD TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles} FOR CHANGED PROPERTY FILE $changedFile "
 
-	// Validate expected built files in output stream
-	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD FAILED FOR CHANGED PROPERTY $changedFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}\nOUTPUT STREAM:\n$outputStream\n"
-	
-	argMap.testResults.add("PASSED")
-	println "**"
-	println "** IMPACT BUILD ON PROPERTY CHANGE : PASSED FOR $changedFile **"
-	println "**"
+		// Validate expected built files in output stream
+		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList} FOR CHANGED PROPERTY FILE $changedFile"
+		
+		argMap.testResults.add("PASSED")
+		println "**"
+		println "** IMPACT BUILD ON PROPERTY CHANGE : PASSED FOR $changedFile **"
+		println "**"
 	}
 	catch(AssertionError e) {
-		argMap.testResults.add("! FAILED")
-		def result = e.getMessage()
-		assertionList << result;
+		def message = e.getMessage()
+		argMap.testResults.add("! FAILED: ${message}")
 		props.testsSucceeded = false
+
+		println "\n***"
+		println "**START OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**\n"
+		println  message
+		println "OUTPUT STREAM: \n${outputStream}\n"
+		println "\n**END OF FAILED IMPACT BUILD (PROPERTY CHANGE) TEST RESULTS**"
+		println "***"
  }
 }
 def cleanUpDatasets() {

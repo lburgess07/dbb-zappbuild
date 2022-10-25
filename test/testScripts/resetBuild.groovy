@@ -38,7 +38,7 @@ process.waitForProcessOutput(outputStream, System.err)
 println "** Validating reset build"
 // Validate clean reset build
 try {
-    assert outputStream.contains("Deleting collection") && ("Deleting build result group") && ("Build finished") : "*! RESET OF THE BUILD FAILED\nOUTPUT STREAM:\n$outputStream\n"
+    assert outputStream.contains("Deleting collection") && ("Deleting build result group") && ("Build finished") : "*! RESET OF THE BUILD FAILED\nOUTPUT STREAM:\n\n"
 
     argMap.testResults.add("PASSED")
     println "**"
@@ -48,7 +48,7 @@ try {
 }
 catch (AssertionError ae) {
     def message = ae.getMessage()
-    argMap.testResults.add("! FAILED")
-    println(message)
+    argMap.testResults.add("! FAILED: ${message}")
+    println(message + "\n${outputStream}\n")
 }
 

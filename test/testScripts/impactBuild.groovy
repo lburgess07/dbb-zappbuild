@@ -53,13 +53,6 @@ try {
 }
 finally {
 	cleanUpDatasets()
-	if (assertionList.size()>0) {
-        println "\n***"
-		println "**START OF FAILED IMPACT BUILD TEST RESULTS**\n"
-		println "*FAILED IMPACT BUILD TEST RESULTS*\n" + assertionList
-		println "\n**END OF FAILED IMPACT BUILD TEST RESULTS**"
-		println "***"
-  }
 }
 // script end  
 
@@ -86,26 +79,32 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 	def expectedFilesBuiltList = filesBuiltMappings.getValue(changedFile).split(',')
 	
     try{
-	// Validate clean build
-	assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD FAILED FOR $changedFile\nOUTPUT STREAM:\n$outputStream\n"
+		// Validate clean build
+		assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD FAILED FOR $changedFile"
 
-	// Validate expected number of files built
-	def numImpactFiles = expectedFilesBuiltList.size()
-	assert outputStream.contains("Total files processed : ${numImpactFiles}") : "*! IMPACT BUILD FOR $changedFile TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles}\nOUTPUT STREAM:\n$outputStream\n"
+		// Validate expected number of files built
+		def numImpactFiles = expectedFilesBuiltList.size()
+		assert outputStream.contains("Total files processed : ${numImpactFiles}") : "*! IMPACT BUILD FOR $changedFile TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numImpactFiles}"
 
-	// Validate expected built files in output stream
-	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD FOR $changedFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}\nOUTPUT STREAM:\n$outputStream\n"
-	
-	argMap.testResults.add("PASSED")
-	println "**"
-	println "** IMPACT BUILD TEST : PASSED FOR $changedFile **"
-	println "**"
+		// Validate expected built files in output stream
+		assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! IMPACT BUILD FOR $changedFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}"
+		
+		argMap.testResults.add("PASSED")
+		println "**"
+		println "** IMPACT BUILD TEST : PASSED FOR $changedFile **"
+		println "**"
     }
     catch(AssertionError e) {
-		argMap.testResults.add("! FAILED")
-        def result = e.getMessage()
-        assertionList << result;
+		def message = e.getMessage()
+		argMap.testResults.add("! FAILED: ${message}")
 		props.testsSucceeded = false
+
+		println "\n***"
+		println "**START OF FAILED IMPACT BUILD TEST RESULTS**\n"
+		println message
+		println "OUTPUT STREAM: \n${outputStream}\n"
+		println "\n**END OF FAILED IMPACT BUILD TEST RESULTS**"
+		println "***"
  }
 }
 def cleanUpDatasets() {

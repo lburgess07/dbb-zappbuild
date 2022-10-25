@@ -89,13 +89,6 @@ try {
 }
 finally {
 	cleanUpDatasets()
-	if (assertionList.size()>0) {
-		println "\n***"
-		println "**START OF FAILED IMPACT BUILD TEST RESULTS FOR FILE DELETION**\n"
-		println "*FAILED IMPACT BUILD TEST RESULTS*\n" + assertionList
-		println "\n**END OF FAILED IMPACT BUILD TEST RESULTS FOR FILE DELETION**"
-		println "***"
-	}
 }
 // script end
 
@@ -125,20 +118,20 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 		
 		
 		// Validate clean build
-		assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD FAILED FOR $deleteFile\nOUTPUT STREAM:\n$outputStream\n"
+		assert outputStream.contains("Build State : CLEAN") : "*! IMPACT BUILD STATE NOT CLEAN FOR DELETED FILE $deleteFile"
 
 		// Validate message that deleted file was deleted from collections
-		assert outputStream.contains("*** Deleting logical file for ${props.app}/${deleteFile}") : "*! IMPACT BUILD FOR DELETION OF $deleteFile DO NOT FIND DELETION OF LOGICAL FILE\nOUTPUT STREAM:\n$outputStream\n"
+		assert outputStream.contains("*** Deleting logical file for ${props.app}/${deleteFile}") : "*! IMPACT BUILD FOR DELETION OF $deleteFile DID NOT FIND DELETION OF LOGICAL FILE"
 		
 		// Validate creation of the Delete Record 
-		assert outputStream.contains("** Create deletion record for file") : "*! IMPACT BUILD FOR $deleteFile DO NOT FIND CREATION OF DELETE RECORD\nOUTPUT STREAM:\n$outputStream\n"
+		assert outputStream.contains("** Create deletion record for file") : "*! IMPACT BUILD FOR $deleteFile DID NOT FIND CREATION OF DELETE RECORD"
 		
 		expectedDeletedFilesList.each { deletedOutput ->
 
-			assert outputStream.contains("** Document deletion ${props.hlq}.${deletedOutput} for file") : "*! IMPACT BUILD FOR DELETION OF $deleteFile DO NOT FIND CREATION OF DELETE RECORD\nOUTPUT STREAM:\n$outputStream\n"
+			assert outputStream.contains("** Document deletion ${props.hlq}.${deletedOutput} for file") : "*! IMPACT BUILD FOR DELETION OF $deleteFile DID NOT FIND CREATION OF DELETE RECORD"
 
 			// Validate deletion of output
-			assert outputStream.contains("** Deleting ${props.hlq}.${deletedOutput}") : "*! IMPACT BUILD FOR DELETION OF $deleteFile DO NOT FIND DELETION OF LOAD MODULE\nOUTPUT STREAM:\n$outputStream\n"
+			assert outputStream.contains("** Deleting ${props.hlq}.${deletedOutput}") : "*! IMPACT BUILD FOR DELETION OF $deleteFile DID NOT FIND DELETION OF LOAD MODULE"
 
 		}
 		
@@ -148,9 +141,16 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 		println "**"
 	}
 	catch(AssertionError e) {
-		argMap.testResults.add("! FAILED")
-		def result = e.getMessage()
-		assertionList << result;
+		def message = e.getMessage()
+		argMap.testResults.add("! FAILED: ${message}")
+		props.testsSucceeded = false
+
+		println "\n***"
+		println "**START OF FAILED IMPACT BUILD (DELETION) TEST RESULTS FOR FILE DELETION**\n"
+		println message
+		println "OUTPUT STREAM: \n${outputStream}"
+		println "\n**END OF FAILED IMPACT BUILD (DELETION) TEST RESULTS FOR FILE DELETION**"
+		println "***"
 	}
 }
 def cleanUpDatasets() {

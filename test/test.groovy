@@ -50,7 +50,7 @@ finally {
 	String leftAlignFormat = "| %-4d | %-25s | %-75s |%n";
 	// Print header
 	System.out.format("+------+---------------------------+-----------------------------------------------------------------------------+%n");
-	System.out.format("| Num  |    Test Name              |    Result                                                                   |%n");
+	System.out.format("| Num  | Test Name                 | Result                                                                      |%n");
 	System.out.format("+------+---------------------------+-----------------------------------------------------------------------------+%n");
 	// Print data
 	testList.eachWithIndex { testName, index -> 

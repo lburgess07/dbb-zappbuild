@@ -56,13 +56,6 @@ try {
 }
 finally {
 	cleanUpDatasets()
-	if (assertionList.size()>0) {
-        println "\n***"
-		println "**START OF FAILED MERGED BUILD TEST RESULTS**\n"
-		println "*FAILED MERGED BUILD TEST RESULTS*\n" + assertionList
-		println "\n**END OF FAILED MERGED BUILD TEST RESULTS**"
-		println "***"
-  }
 }
 // script end  
 
@@ -102,14 +95,14 @@ def validateMergeBuild(String changedFile, PropertyMappings filesBuiltMappings, 
 	
     try{
 	// Validate clean build
-	assert outputStream.contains("Build State : CLEAN") : "*! MERGED BUILD FAILED FOR $changedFile\nOUTPUT STREAM:\n$outputStream\n"
+	assert outputStream.contains("Build State : CLEAN") : "*! MERGED BUILD STATE NOT CLEAN FOR CHANGED FILE $changedFile"
 
 	// Validate expected number of files built
 	def numMergeFiles = expectedFilesBuiltList.size()
-	assert outputStream.contains("Total files processed : ${numMergeFiles}") : "*! MERGED BUILD FOR $changedFile TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numMergeFiles}\nOUTPUT STREAM:\n$outputStream\n"
+	assert outputStream.contains("Total files processed : ${numMergeFiles}") : "*! TOTAL FILES PROCESSED ARE NOT EQUAL TO ${numMergeFiles} FOR CHANGED FILE $changedFile"
 
 	// Validate expected built files in output stream
-	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! MERGED BUILD FOR $changedFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}\nOUTPUT STREAM:\n$outputStream\n"
+	assert expectedFilesBuiltList.count{ i-> outputStream.contains(i) } == expectedFilesBuiltList.size() : "*! MERGED BUILD FOR $changedFile DOES NOT CONTAIN THE LIST OF BUILT FILES EXPECTED ${expectedFilesBuiltList}"
 	
 	argMap.testResults.add("PASSED")
 	println "**"
@@ -117,10 +110,16 @@ def validateMergeBuild(String changedFile, PropertyMappings filesBuiltMappings, 
 	println "**"
     }
     catch(AssertionError e) {
-		argMap.testResults.add("! FAILED")
-        def result = e.getMessage()
-        assertionList << result;
+		def message = e.getMessage()
+		argMap.testResults.add("! FAILED: ${message}")
 		props.testsSucceeded = false
+
+		println "\n***"
+		println "**START OF FAILED MERGED BUILD TEST RESULTS**\n"
+		println message
+		println "OUTPUT STREAM: \n${outputStream}\n"
+		println "\n**END OF FAILED MERGED BUILD TEST RESULTS**"
+		println "***"
  }
 }
 def cleanUpDatasets() {
