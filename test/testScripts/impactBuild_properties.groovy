@@ -27,6 +27,7 @@ fullBuildCommand << "--id ${props.id}"
 fullBuildCommand << (props.pw ? "--pw ${props.pw}" : "--pwFile ${props.pwFile}")
 fullBuildCommand << (props.verbose ? "--verbose" : "")
 fullBuildCommand << (props.propFiles ? "--propFiles ${props.propFiles},${props.zAppBuildDir}/test/applications/${props.app}/${props.impactBuild_properties_buildPropSetting}" : "")
+fullBuildCommand << (props.propOverwrites ? "--propOverwrites ${props.propOverwrites}" : "")
 fullBuildCommand << "--fullBuild"
 
 // create impact build command
@@ -43,6 +44,7 @@ impactBuildCommand << "--id ${props.id}"
 impactBuildCommand << (props.pw ? "--pw ${props.pw}" : "--pwFile ${props.pwFile}")
 impactBuildCommand << (props.verbose ? "--verbose" : "")
 impactBuildCommand << (props.propFiles ? "--propFiles ${props.propFiles},${props.zAppBuildDir}/test/applications/${props.app}/${props.impactBuild_properties_buildPropSetting}" : "")
+impactBuildCommand << (props.propOverwrites ? "--propOverwrites ${props.propOverwrites}" : "")
 impactBuildCommand << "--impactBuild"
 
 // iterate through change files to test impact build

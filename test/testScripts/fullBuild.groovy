@@ -26,6 +26,7 @@ fullBuildCommand << "--id ${props.id}"
 fullBuildCommand << (props.pw ? "--pw ${props.pw}" : "--pwFile ${props.pwFile}")
 fullBuildCommand << (props.verbose ? "--verbose" : "")
 fullBuildCommand << (props.propFiles ? "--propFiles ${props.propFiles}" : "")
+fullBuildCommand << (props.propOverwrites ? "--propOverwrites ${props.propOverwrites}" : "")
 fullBuildCommand << "--fullBuild"
 
 // Run full build 

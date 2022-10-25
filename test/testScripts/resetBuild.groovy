@@ -26,6 +26,7 @@ resetBuildCommand << "--id ${props.id}"
 resetBuildCommand << (props.pw ? "--pw ${props.pw}" : "--pwFile ${props.pwFile}")
 resetBuildCommand << (props.verbose ? "--verbose" : "")
 resetBuildCommand << (props.propFiles ? "--propFiles ${props.propFiles}" : "")
+resetBuildCommand << (props.propOverwrites ? "--propOverwrites ${props.propOverwrites}" : "")
 resetBuildCommand << "--reset"
 
 // Run reset build 

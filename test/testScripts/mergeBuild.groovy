@@ -30,6 +30,7 @@ mergeBuildCommand << "--id ${props.id}"
 mergeBuildCommand << (props.pw ? "--pw ${props.pw}" : "--pwFile ${props.pwFile}")
 mergeBuildCommand << (props.verbose ? "--verbose" : "")
 mergeBuildCommand << (props.propFiles ? "--propFiles ${props.zAppBuildDir}/test/applications/${props.app}/${props.mergeBuild_buildPropSetting},${props.propFiles}" : "")
+mergeBuildCommand << (props.propOverwrites ? "--propOverwrites ${props.propOverwrites}" : "")
 mergeBuildCommand << "--mergeBuild"
 
 // iterate through change files to test merge build
