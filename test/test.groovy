@@ -39,7 +39,7 @@ finally {
 	// Print test results
 	println("\nTest Results:")
 	// Set up formatting
-	String leftAlignFormat = " %  -3d | %-25s | %-45s %n";
+	String leftAlignFormat = "%  -3d | %-25s | %-45s %n";
 	// Print header
 	System.out.format("------+---------------------------+-----------------------------------------------%n");
 	System.out.format("Order | Test Name                 | Result                                        %n");
