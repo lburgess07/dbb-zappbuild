@@ -39,7 +39,7 @@ finally {
 	// Print test results
 	println("\nTest Results:")
 	// Set up formatting
-	String leftAlignFormat = "% -3d  | %-25s | %-45s %n";
+	String leftAlignFormat = "%  -3d  | %-25s | %-45s %n";
 	// Print header
 	System.out.format("------+---------------------------+-----------------------------------------------%n");
 	System.out.format("Order | Test Name                 | Result                                        %n");
@@ -48,9 +48,11 @@ finally {
 	testList.eachWithIndex { testName, index -> 
 		def testNum = index + 1
 		def testResult = testResults.get(index)
+		def testStatus = testResult.get(0)
 		// if (!testResult.contains("PASS"))
 		// 	testResult = testResult.substring(0, testResult.indexOf("Expression")) // Strip 'Expression: *' part of message out
 		System.out.format(leftAlignFormat, testNum, testName, testResult)
+		System.out.println(testResult.get(1))
 	}
 	System.out.format("------+---------------------------+-----------------------------------------------%n");
 

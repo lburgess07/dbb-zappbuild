@@ -56,9 +56,9 @@ finally {
 	cleanUpDatasets()
 
 	if (assertionList.size() == 0)
-		argMap.testResults.add("PASSED")
+		argMap.testResults.add(["PASSED"])
 	else
-		argMap.testResults.add("!* FAILED: ${String.join(',', assertionList)}")
+		argMap.testResults.add(["!* FAILED: ", assertionList])
 }
 // script end  
 

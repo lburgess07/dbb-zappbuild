@@ -43,7 +43,7 @@ try {
     assert outputStream.contains("Deleting build result group") : "BUILD GROUP DELETION NOT FOUND IN OUTPUT"
     assert outputStream.contains("Build finished") : "RESET OF THE BUILD FAILED"
 
-    argMap.testResults.add("PASSED")
+    argMap.testResults.add(["PASSED"])
     println "**"
     println "** RESET OF THE BUILD : PASSED **"
     println "**"
