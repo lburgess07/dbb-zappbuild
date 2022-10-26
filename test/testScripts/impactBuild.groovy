@@ -103,7 +103,7 @@ def validateImpactBuild(String changedFile, PropertyMappings filesBuiltMappings,
 		def message = e.getMessage()
 		props.testsSucceeded = "false"
 
-		assertionList << message;
+		assertionList << message.substring(0, message.indexOf("Expression:"));
 		println("\n!* FAILED IMPACT BUILD TEST - FILE DELETE: ${message}")
 		if (props.verbose) e.printStackTrace()
 		println "\n***"

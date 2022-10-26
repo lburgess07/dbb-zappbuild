@@ -60,7 +60,7 @@ catch(AssertionError e) {
 	def message = e.getMessage()
 	props.testsSucceeded = "false"
 
-	assertionList << message;
+	assertionList << message.substring(0, message.indexOf("Expression:"));
 	println("\n!* FAILED FULL BUILD TEST: ${message}")
 	if (props.verbose) e.printStackTrace()
 	println "\n***"
