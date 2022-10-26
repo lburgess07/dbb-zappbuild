@@ -41,9 +41,9 @@ finally {
 	// Set up formatting
 	String leftAlignFormat = "% -3d  | %-25s | %-45s %n";
 	// Print header
-	System.out.format("------+---------------------------+-----------------------------------------------%n");
-	System.out.format("Order | Test Name                 | Result                                        %n");
-	System.out.format("------+---------------------------+-----------------------------------------------%n");
+	System.out.format("-----+---------------------------+-----------------------------------------------%n");
+	System.out.format("Order| Test Name                 | Result                                        %n");
+	System.out.format("-----+---------------------------+-----------------------------------------------%n");
 	// Print data
 	testList.eachWithIndex { testName, index -> 
 		def testNum = index + 1
@@ -52,7 +52,7 @@ finally {
 		// 	testResult = testResult.substring(0, testResult.indexOf("Expression")) // Strip 'Expression: *' part of message out
 		System.out.format(leftAlignFormat, testNum, testName, testResult)
 	}
-	System.out.format("------+---------------------------+-----------------------------------------------%n");
+	System.out.format("-----+---------------------------+-----------------------------------------------%n");
 
 	// if error occurred signal process error
 	if (props.testsSucceeded.toBoolean() == false) {
