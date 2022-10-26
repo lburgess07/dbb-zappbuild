@@ -116,7 +116,7 @@ def validateMergeBuild(String changedFile, PropertyMappings filesBuiltMappings, 
     }
     catch(AssertionError e) {
 		def message = e.getMessage()
-		props.testsSucceeded = false
+		props.testsSucceeded = "false"
 
 		assertionList << message;
 		println("\n!* FAILED MERGE BUILD TEST: ${message}")

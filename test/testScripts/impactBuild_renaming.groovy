@@ -112,7 +112,7 @@ def validateImpactBuild(String renameFile, PropertyMappings filesBuiltMappings, 
 	}
 	catch(AssertionError e) {
 		def message = e.getMessage()
-		props.testsSucceeded = false
+		props.testsSucceeded = "false"
 
 		assertionList << message;
 		println("\n!* FAILED IMPACT BUILD TEST - FILE RENAME: ${message}")

@@ -148,7 +148,7 @@ def validateImpactBuild(String deleteFile, PropertyMappings outputsDeletedMappin
 	}
 	catch(AssertionError e) {
 		def message = e.getMessage()
-		props.testsSucceeded = false
+		props.testsSucceeded = "false"
 
 		assertionList << message;
 		println("\n!* FAILED IMPACT BUILD TEST - FILE DELETE: ${message}")

@@ -58,7 +58,7 @@ try {
 }
 catch(AssertionError e) {
 	def message = e.getMessage()
-	props.testsSucceeded = false
+	props.testsSucceeded = "false"
 
 	assertionList << message;
 	println("\n!* FAILED FULL BUILD TEST: ${message}")
