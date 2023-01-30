@@ -41,9 +41,9 @@ finally {
 	// Set up formatting
 	String leftAlignFormat = "%  -3d  | %-25s | %-45s %n";
 	// Print header
-	System.out.format("------+---------------------------+-----------------------------------------------%n");
-	System.out.format("Order | Test Name                 | Result                                        %n");
-	System.out.format("------+---------------------------+-----------------------------------------------%n");
+	System.out.format("-----+---------------------------+-----------------------------------------------%n");
+	System.out.format("Order| Test Name                 | Result                                        %n");
+	System.out.format("-----+---------------------------+-----------------------------------------------%n");
 	// Print data
 	testList.eachWithIndex { testName, index -> 
 		def testNum = index + 1
@@ -54,7 +54,7 @@ finally {
 		System.out.format(leftAlignFormat, testNum, testName, testResult)
 		System.out.println(testResult.get(1))
 	}
-	System.out.format("------+---------------------------+-----------------------------------------------%n");
+	System.out.format("-----+---------------------------+-----------------------------------------------%n");
 
 	// if error occurred signal process error
 	if (props.testsSucceeded.toBoolean() == false) {
@@ -91,14 +91,14 @@ def loadBuildProperties(String [] args) {
 	   // zAppBuild options
 	   a(longOpt: 'app', 'Application that is being tested (example: MortgageApplication)', args: 1, required: true)
 	   q(longOpt: 'hlq', 'HLQ for dataset reation / deletion (example: USER.BUILD)', args: 1, required: true)
-	   u(longOpt: 'url', 'Db2 URL (', args: 1, required: true)
+	   u(longOpt: 'url', 'Db2 URL', args: 1, required: true)
 	   i(longOpt: 'id', 'Db2 user id', args: 1, required: true)
 	   p(longOpt: 'pw', 'Db2 password', args: 1)
 	   P(longOpt: 'pwFile', 'Db2 password file', args: 1)
 	   v(longOpt: 'verbose', 'Flag indicating to print trace statements')
 	   f(longOpt: 'propFiles', 'Commas spearated list of additional property files to load. Absolute paths or relative to workspace', args:1)
     	o(longOpt: 'outDir', 'Absolute path to the build output root directory', args:1)
-		po(longOpt:'propOverwrites', args:1, 'Comma separated list of key=value pairs for set and overwrite build properties.')
+		po(longOpt:'propOverwrites', 'Comma separated list of key=value pairs for set and overwrite build properties.', args:1)
 	}
 	
 	def options = cli.parse(args)
