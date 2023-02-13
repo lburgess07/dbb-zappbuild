@@ -494,7 +494,7 @@ def scanFile(String buildFile) {
 	}
 	else {
 		if (props.verbose) println("*** Scanning file with the default scanner")
-		lfile = DependencyUtilities.getLogicalFile(buildFile, props.workspace, False)
+		lfile = DependencyUtilities.getLogicalFile(buildFile, props.workspace, false)
 	}
 	return lfile
 }
