@@ -479,6 +479,25 @@ def getScanner(String buildFile){
 	}
 }
 
+/* 
+ * Returns a logical file after scanning file 
+ */
+def scanFile(String buildFile) {
+	def mapping = new PropertyMappings("dbb.scannerMapping")
+	LogicalFile lfile;
+
+	if (props.runzTests && props.runzTests.toBoolean() && mapping.isMapped("ZUnitConfigScanner", buildFile)) {
+		if (props.verbose) println("*** Scanning file with the ZUnitConfigScanner")
+		scanner = new ZUnitConfigScanner()
+		lfile = scanner.scan(buildFile, props.workspace)
+	}
+	else {
+		if (props.verbose) println("*** Scanning file with the default scanner")
+		lfile = DependencyUtilities.getLogicalFile(buildFile, props.workspace, False)
+	}
+	return lfile
+}
+
 /*
  * createLanguageDatasets - gets the language used to create the datasets
  */

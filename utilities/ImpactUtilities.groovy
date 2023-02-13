@@ -827,9 +827,9 @@ def updateCollection(changedFiles, deletedFiles, renamedFiles) {
 			// files in a collection are stored as relative paths from a source directory
 			if (props.verbose) println "*** Scanning file $file (${props.workspace}/${file})"
 
-			def scanner = buildUtils.getScanner(file)
+			//def scanner = buildUtils.getScanner(file)
 			try {
-				def logicalFile = scanner.scan(file, props.workspace)
+				def logicalFile = buildUtils.scanFile(file)
 				if (props.verbose) println "*** Logical file for $file =\n$logicalFile"
 
 				// Update logical file with dependencies to build properties
