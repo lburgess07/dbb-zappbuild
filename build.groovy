@@ -448,7 +448,9 @@ def populateBuildProperties(def opts) {
 	if (opts.df) props.userBuildDependencyFile = opts.df
 
 	// set build file from first non-option argument
-	if (opts.arguments()) props.buildFile = opts.arguments()[0].trim()
+	//if (opts.arguments()) props.buildFile = opts.arguments()[0].trim()
+	if (opts.arguments()) props.buildFile = java.net.URLDecoder.decode(opts.arguments()[0].trim(), "UTF-8")
+
 
 	// set calculated properties
 	if (!props.userBuild) {
