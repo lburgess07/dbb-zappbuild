@@ -114,7 +114,7 @@ def getRemoteGitBranches(String gitDir) {
  * @param  String gitDir  		Local Git repository directory
  */
 def isGitDetachedHEAD(String gitDir) {
-	def cmd = []
+	List<String> cmd = []
 	cmd << "git"
 	cmd << "-C"
 	cmd << gitDir
