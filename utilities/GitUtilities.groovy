@@ -127,7 +127,8 @@ def getRemoteGitBranches(String gitDir) {
  */
 def isGitDetachedHEAD(String gitDir) {
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+	cmd << "-C"
 	cmd << gitDir
 	cmd << "status"
 	StringBuffer gitStatus = new StringBuffer()
