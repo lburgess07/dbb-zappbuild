@@ -16,8 +16,8 @@ import groovy.transform.*
 
 def isGitDir(String dir) {
 	List<String> cmd = []
-	cmd << "git"
-	cmd << "-C"
+	cmd << "git -C"
+	//cmd << "-C"
 	cmd << dir
 	cmd << "rev-parse"
 	cmd << "--is-inside-work-tree"
