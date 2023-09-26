@@ -16,11 +16,11 @@ import groovy.transform.*
 
 def isGitDir(String dir) {
 	List<String> cmd = []
-	cmd << "git -C"
-	//cmd << "-C"
+	cmd << "git"
+	cmd << "-C"
 	cmd << dir
-	cmd << "rev-parse"
-	cmd << "--is-inside-work-tree"
+	cmd << "rev-parse --is-inside-work-tree"
+	//cmd << "--is-inside-work-tree"
 
 	StringBuffer gitResponse = new StringBuffer()
 	StringBuffer gitError = new StringBuffer()
