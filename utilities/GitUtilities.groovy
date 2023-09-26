@@ -19,8 +19,8 @@ def isGitDir(String dir) {
 	cmd << "git"
 	cmd << "-C"
 	cmd << dir
-	cmd << "rev-parse --is-inside-work-tree"
-	//cmd << "--is-inside-work-tree"
+	cmd << "rev-parse"
+	cmd << "--is-inside-work-tree"
 
 	StringBuffer gitResponse = new StringBuffer()
 	StringBuffer gitError = new StringBuffer()
@@ -77,7 +77,11 @@ def getCurrentGitDetachedBranch(String gitDir) {
 	cmd << "git"
 	cmd << "-C"
 	cmd << gitDir
-	cmd << "show -s --pretty=%D HEAD"
+	cmd << "show" 
+	cmd << "-s" 
+	cmd << "--pretty=%D"
+	cmd << "HEAD"
+
 	StringBuffer gitBranch = new StringBuffer()
 	StringBuffer gitError = new StringBuffer()
 
@@ -112,7 +116,8 @@ def getRemoteGitBranches(String gitDir) {
 	cmd << "git"
 	cmd << "-C"
 	cmd << gitDir
-	cmd << "branch -r"
+	cmd << "branch" 
+	cmd << "-r"
 
 	StringBuffer gitOut = new StringBuffer()
 	StringBuffer gitError = new StringBuffer()
@@ -140,6 +145,7 @@ def isGitDetachedHEAD(String gitDir) {
 	cmd << "-C"
 	cmd << gitDir
 	cmd << "status"
+
 	StringBuffer gitStatus = new StringBuffer()
 	StringBuffer gitError = new StringBuffer()
 
@@ -280,7 +286,9 @@ def getChangedFiles(String gitDir, String baseHash, String currentHash) {
 	gitCmd << "git"
 	gitCmd << "-C"
 	gitCmd << gitDir
-	gitCmd << "--no-pager diff --name-status"
+	gitCmd << "--no-pager" 
+	gitCmd << "diff"
+	gitCmd << "--name-status"
 	gitCmd << baseHash
 	gitCmd << currentHash
 
@@ -317,7 +325,9 @@ def getConcurrentChanges(String gitDir, String baselineReference) {
 	gitCmd << "git"
 	gitCmd << "-C"
 	gitCmd << gitDir
-	gitCmd << "--no-pager diff --name-status"
+	gitCmd << "--no-pager" 
+	gitCmd << "diff" 
+	gitCmd << "--name-status"
 	gitCmd << "HEAD...remotes/origin/$baselineReference"
 
 	return getChangedFiles(gitCmd)
@@ -391,7 +401,10 @@ def getCurrentChangedFiles(String gitDir, String currentHash, String verbose) {
 	cmd << "git"
 	cmd << "-C"
 	cmd << gitDir
-	cmd << "show --pretty=format: --name-status $currentHash"
+	cmd << "show" 
+	cmd << "--pretty=format:" 
+	cmd << "--name-status" 
+	cmd << currentHash
 	if (verbose) println "** Running git command: $cmd"
 
 	def gitDiff = new StringBuffer()
@@ -450,7 +463,12 @@ def getChangedProperties(String gitDir, String baseline, String currentHash, Str
 	cmd << "git"
 	cmd << "-C"
 	cmd << gitDir
-	cmd << "diff --ignore-all-space --no-prefix -U0 $baseline $currentHash"
+	cmd << "diff" 
+	cmd << "--ignore-all-space" 
+	cmd << "--no-prefix" 
+	cmd << "-U0" 
+	cmd << baseline
+	cmd << currentHash
 	cmd << propertiesFile
 
 	def gitDiff = new StringBuffer()
