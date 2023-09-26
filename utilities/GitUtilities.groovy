@@ -15,7 +15,7 @@ import groovy.transform.*
  */
 
 def isGitDir(String dir) {
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << dir
 	cmd << "rev-parse --is-inside-work-tree"
@@ -44,7 +44,7 @@ def isGitDir(String dir) {
  * @return String gitBranch     The current Git branch
  */
 def getCurrentGitBranch(String gitDir) {
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "rev-parse --abbrev-ref HEAD"
@@ -66,7 +66,7 @@ def getCurrentGitBranch(String gitDir) {
  * @return String gitBranch     The current Git branch
  */
 def getCurrentGitDetachedBranch(String gitDir) {
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "show -s --pretty=%D HEAD"
@@ -100,7 +100,7 @@ def getCurrentGitDetachedBranch(String gitDir) {
 def getRemoteGitBranches(String gitDir) {
 
 	Set<String> remoteBranches = new HashSet<String>()
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "branch -r"
@@ -126,7 +126,7 @@ def getRemoteGitBranches(String gitDir) {
  * @param  String gitDir  		Local Git repository directory
  */
 def isGitDetachedHEAD(String gitDir) {
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "status"
@@ -151,7 +151,7 @@ def isGitDetachedHEAD(String gitDir) {
 def getCurrentGitHash(String gitDir, boolean abbrev) {
 	// String cmd = "git -C $gitDir rev-parse HEAD"
 	// if (abbrev) cmd = "git -C $gitDir rev-parse --short=8 HEAD"
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "rev-parse"
@@ -180,7 +180,7 @@ def getCurrentGitHash(String gitDir, boolean abbrev) {
  * @return String gitHash       The current Git hash
  */
 def getFileCurrentGitHash(String gitDir, String filePath) {
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "rev-list -1 HEAD"
@@ -204,7 +204,7 @@ def getFileCurrentGitHash(String gitDir, String filePath) {
  * @return String gitUrl       The current Git url
  */
 def getCurrentGitUrl(String gitDir) {
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "config --get remote.origin.url"
@@ -229,7 +229,7 @@ def getCurrentGitUrl(String gitDir) {
  * @return String gitHash     The previous Git commit hash
  */
 def getPreviousGitHash(String gitDir) {
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "--no-pager log -n 1 --skip=1"
@@ -254,7 +254,7 @@ def getPreviousGitHash(String gitDir) {
  */
 def getChangedFiles(String gitDir, String baseHash, String currentHash) {
 	// String gitCmd = "git -C $gitDir --no-pager diff --name-status $baseHash $currentHash"
-	List<String> gitCmd = new ArrayList<String>
+	List<String> gitCmd = []
 	gitCmd << "git -C"
 	gitCmd << gitDir
 	gitCmd << "--no-pager diff --name-status"
@@ -271,7 +271,7 @@ def getChangedFiles(String gitDir, String baseHash, String currentHash) {
  */
 def getMergeChanges(String gitDir, String baselineReference) {
 	// String gitCmd = "git -C $gitDir --no-pager diff --name-status remotes/origin/$baselineReference...HEAD"
-	List<String> gitCmd = new ArrayList<String>
+	List<String> gitCmd = []
 	gitCmd << "git -C"
 	gitCmd << gitDir
 	gitCmd << "--no-pager diff --name-status"
@@ -287,7 +287,7 @@ def getMergeChanges(String gitDir, String baselineReference) {
  */
 def getConcurrentChanges(String gitDir, String baselineReference) {
 	// String gitCmd = "git -C $gitDir --no-pager diff --name-status HEAD...remotes/origin/$baselineReference"
-	List<String> gitCmd = new ArrayList<String>
+	List<String> gitCmd = []
 	gitCmd << "git -C"
 	gitCmd << gitDir
 	gitCmd << "--no-pager diff --name-status"
@@ -360,7 +360,7 @@ def getChangedFiles(List<String> cmd) {
 def getCurrentChangedFiles(String gitDir, String currentHash, String verbose) {
 	// if (verbose) println "** Running git command: git -C $gitDir show --pretty=format: --name-status $currentHash"
 	// String cmd = "git -C $gitDir show --pretty=format: --name-status $currentHash"
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "show --pretty=format: --name-status $currentHash"
@@ -418,7 +418,7 @@ def getCurrentChangedFiles(String gitDir, String currentHash, String verbose) {
 
 def getChangedProperties(String gitDir, String baseline, String currentHash, String propertiesFile) {
 	// String cmd = "git -C $gitDir diff --ignore-all-space --no-prefix -U0 $baseline $currentHash $propertiesFile"
-	List<String> cmd = new ArrayList<String>
+	List<String> cmd = []
 	cmd << "git -C"
 	cmd << gitDir
 	cmd << "diff --ignore-all-space --no-prefix -U0 $baseline $currentHash"
