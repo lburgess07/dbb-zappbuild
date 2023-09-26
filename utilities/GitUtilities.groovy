@@ -16,9 +16,12 @@ import groovy.transform.*
 
 def isGitDir(String dir) {
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+	cmd << "-C"
 	cmd << dir
-	cmd << "rev-parse --is-inside-work-tree"
+	cmd << "rev-parse"
+	cmd << "--is-inside-work-tree"
+
 	StringBuffer gitResponse = new StringBuffer()
 	StringBuffer gitError = new StringBuffer()
 	boolean isGit = false
@@ -45,9 +48,13 @@ def isGitDir(String dir) {
  */
 def getCurrentGitBranch(String gitDir) {
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+	cmd << "-C"
 	cmd << gitDir
-	cmd << "rev-parse --abbrev-ref HEAD"
+	cmd << "rev-parse"
+	cmd << "--abbrev-ref"
+	cmd << "HEAD"
+
 	StringBuffer gitBranch = new StringBuffer()
 	StringBuffer gitError = new StringBuffer()
 
@@ -67,7 +74,8 @@ def getCurrentGitBranch(String gitDir) {
  */
 def getCurrentGitDetachedBranch(String gitDir) {
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+	cmd << "-C"
 	cmd << gitDir
 	cmd << "show -s --pretty=%D HEAD"
 	StringBuffer gitBranch = new StringBuffer()
@@ -101,7 +109,8 @@ def getRemoteGitBranches(String gitDir) {
 
 	Set<String> remoteBranches = new HashSet<String>()
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+cmd << "-C"
 	cmd << gitDir
 	cmd << "branch -r"
 
@@ -153,7 +162,8 @@ def getCurrentGitHash(String gitDir, boolean abbrev) {
 	// String cmd = "git -C $gitDir rev-parse HEAD"
 	// if (abbrev) cmd = "git -C $gitDir rev-parse --short=8 HEAD"
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+cmd << "-C"
 	cmd << gitDir
 	cmd << "rev-parse"
 	cmd << abbrev ? "--short=8" : ""
@@ -182,7 +192,8 @@ def getCurrentGitHash(String gitDir, boolean abbrev) {
  */
 def getFileCurrentGitHash(String gitDir, String filePath) {
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+cmd << "-C"
 	cmd << gitDir
 	cmd << "rev-list -1 HEAD"
 	cmd << filePath
@@ -206,7 +217,8 @@ def getFileCurrentGitHash(String gitDir, String filePath) {
  */
 def getCurrentGitUrl(String gitDir) {
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+cmd << "-C"
 	cmd << gitDir
 	cmd << "config --get remote.origin.url"
 
@@ -231,7 +243,8 @@ def getCurrentGitUrl(String gitDir) {
  */
 def getPreviousGitHash(String gitDir) {
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+cmd << "-C"
 	cmd << gitDir
 	cmd << "--no-pager log -n 1 --skip=1"
 
@@ -256,7 +269,8 @@ def getPreviousGitHash(String gitDir) {
 def getChangedFiles(String gitDir, String baseHash, String currentHash) {
 	// String gitCmd = "git -C $gitDir --no-pager diff --name-status $baseHash $currentHash"
 	List<String> gitCmd = []
-	gitCmd << "git -C"
+	gitcmd << "git"
+cmd << "-C"
 	gitCmd << gitDir
 	gitCmd << "--no-pager diff --name-status"
 	gitCmd << baseHash
@@ -273,7 +287,8 @@ def getChangedFiles(String gitDir, String baseHash, String currentHash) {
 def getMergeChanges(String gitDir, String baselineReference) {
 	// String gitCmd = "git -C $gitDir --no-pager diff --name-status remotes/origin/$baselineReference...HEAD"
 	List<String> gitCmd = []
-	gitCmd << "git -C"
+	gitcmd << "git"
+cmd << "-C"
 	gitCmd << gitDir
 	gitCmd << "--no-pager diff --name-status"
 	gitCmd << "remotes/origin/$baselineReference...HEAD"
@@ -289,7 +304,8 @@ def getMergeChanges(String gitDir, String baselineReference) {
 def getConcurrentChanges(String gitDir, String baselineReference) {
 	// String gitCmd = "git -C $gitDir --no-pager diff --name-status HEAD...remotes/origin/$baselineReference"
 	List<String> gitCmd = []
-	gitCmd << "git -C"
+	gitcmd << "git"
+cmd << "-C"
 	gitCmd << gitDir
 	gitCmd << "--no-pager diff --name-status"
 	gitCmd << "HEAD...remotes/origin/$baselineReference"
@@ -362,7 +378,8 @@ def getCurrentChangedFiles(String gitDir, String currentHash, String verbose) {
 	// if (verbose) println "** Running git command: git -C $gitDir show --pretty=format: --name-status $currentHash"
 	// String cmd = "git -C $gitDir show --pretty=format: --name-status $currentHash"
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+cmd << "-C"
 	cmd << gitDir
 	cmd << "show --pretty=format: --name-status $currentHash"
 	if (verbose) println "** Running git command: $cmd"
@@ -420,7 +437,8 @@ def getCurrentChangedFiles(String gitDir, String currentHash, String verbose) {
 def getChangedProperties(String gitDir, String baseline, String currentHash, String propertiesFile) {
 	// String cmd = "git -C $gitDir diff --ignore-all-space --no-prefix -U0 $baseline $currentHash $propertiesFile"
 	List<String> cmd = []
-	cmd << "git -C"
+	cmd << "git"
+cmd << "-C"
 	cmd << gitDir
 	cmd << "diff --ignore-all-space --no-prefix -U0 $baseline $currentHash"
 	cmd << propertiesFile
