@@ -358,7 +358,7 @@ def getChangedFiles(List<String> cmd) {
 		// process files from git diff
 		try {
 			println("Line: " + line)
-			gitDiffOutput = line.split() // split output by tab (delimiter used by git)
+			gitDiffOutput = line.split('\\t') // split output by tab (delimiter used by git)
 			println("Line split: " + gitDiffOutput)
 			action = gitDiffOutput[0]
 			file = gitDiffOutput[1]
