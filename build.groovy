@@ -216,8 +216,10 @@ def initializeBuildProcess(String[] args) {
 
 	// initialize build result (requires MetadataStore)
 	if (metadataStore) {
+		println("Creating build result");
 		def buildResult = metadataStore.createBuildResult(props.applicationBuildGroup, props.applicationBuildLabel)
 		// set build state and status
+		println("Setting br properties");
 		buildResult.setState(buildResult.PROCESSING)
 		if (props.preview) buildResult.setStatus(4)
 		
