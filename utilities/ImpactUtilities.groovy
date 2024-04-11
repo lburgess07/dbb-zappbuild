@@ -669,11 +669,13 @@ def saveStaticLinkDependencies(String buildFile, String loadPDS, LogicalFile log
  * Uses build properties
  */
 def verifyCollections() {
-	MetadataStore metadataStore = MetadataStoreFactory.getMetadataStore()
-	if (!metadataStore) {
+	
+	if (!MetadataStoreFactory.metadataStoreExists()) {
 		if (props.verbose) println "** Unable to verify collections. No metadata store."
 		return
 	}
+
+	MetadataStore metadataStore = MetadataStoreFactory.getMetadataStore()
 
 	String mainCollectionName = "${props.application}-${props.mainBuildBranch}"
 	String mainOutputsCollectionName = "${props.application}-${props.mainBuildBranch}-outputs"
