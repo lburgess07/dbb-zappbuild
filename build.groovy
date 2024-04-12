@@ -28,6 +28,7 @@ import groovy.cli.commons.*
 @Field startTime = new Date()
 
 println System.getProperty("java.library.path")
+println System.getenv("LIBPATH")
 
 
 // start time message
