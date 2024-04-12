@@ -27,6 +27,9 @@ import groovy.cli.commons.*
 @Field MetadataStore metadataStore
 @Field startTime = new Date()
 
+println System.getProperty("java.library.path")
+
+
 // start time message
 props.startTime = startTime.format("yyyyMMdd.HHmmss.SSS")
 println("\n** Build start at $props.startTime")
