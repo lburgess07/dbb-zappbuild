@@ -327,9 +327,10 @@ def sortBuildListAsMap(HashMap<String, String> buildMap, String rankPropertyName
  */
 def updateBuildResult(Map args) {
 	// args : errorMsg / warningMsg, logs[logName:logFile]
-	MetadataStore metadataStore = MetadataStoreFactory.getMetadataStore()
+	
 	// update build results only in non-userbuild scenarios
-	if (metadataStore && !props.userBuild) {
+	if (MetadataStoreFactory.metadataStoreExists() && !props.userBuild) {
+		MetadataStore metadataStore = MetadataStoreFactory.getMetadataStore()
 		def buildResult = metadataStore.getBuildResult(props.applicationBuildGroup, props.applicationBuildLabel)
 		if (!buildResult) {
 			println "*! No build result found for BuildGroup '${props.applicationBuildGroup}' and BuildLabel '${props.applicationBuildLabel}'"
