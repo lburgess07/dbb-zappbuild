@@ -509,7 +509,7 @@ def populateBuildProperties(def opts) {
 	// db2 id, password, and passwordFile are no longer properties
 
 	// set IDz/ZOD user build options
-	//if (opts.e) props.errPrefix = opts.e
+	if (opts.e) props.errPrefix = opts.e
 	if (opts.u) props.userBuild = 'true'
 	if (opts.t) props.team = opts.t
 	// support IDE passing dependency file parameter
