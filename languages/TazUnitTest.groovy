@@ -175,7 +175,9 @@ int currentBuildFileNumber = 1
 		if (rc <= props.tazunittest_maxPassRC.toInteger()){
 			println   "***  TAZ Unit Test job ${tazUnitTestRunJcl.submittedJobId} completed with $rc "
 			// Store Report in Workspace
+			println "Copying..."
 			new CopyToHFS().dataset(props.tazunittest_bzureportPDS).member(member).file(reportLogFile).copyMode(DBBConstants.CopyMode.valueOf("BINARY")).append(false).copy()
+			println "Printing..."
 			// printReport
 			printReport(reportLogFile)
 		} else if (rc <= props.tazunittest_maxWarnRC.toInteger()){
@@ -218,11 +220,11 @@ def getPlaybackFile(LogicalFile logicalFile) {
  */
 def printReport(File resultFile) {
 
-	String reportString
-	if (props.logEncoding != null) //if set
-		reportString = new FileInputStream(resultFile).getText(props.logEncoding)
-	else // Default ibm-1047
-		reportString = new FileInputStream(resultFile).getText("IBM-1047")
+	String reportString = new FileInputStream(resultFile).getText("UTF-8")
+	// if (props.logEncoding != null) //if set
+	// 	reportString = new FileInputStream(resultFile).getText(props.logEncoding)
+	// else // Default ibm-1047
+	// 	reportString = new FileInputStream(resultFile).getText("IBM-1047")
 
 	try {
 		def runnerResult = new XmlParser().parseText(reportString)
