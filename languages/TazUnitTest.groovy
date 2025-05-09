@@ -175,9 +175,7 @@ int currentBuildFileNumber = 1
 		if (rc <= props.tazunittest_maxPassRC.toInteger()){
 			println   "***  TAZ Unit Test job ${tazUnitTestRunJcl.submittedJobId} completed with $rc "
 			// Store Report in Workspace
-			println "Copying..."
 			new CopyToHFS().dataset(props.tazunittest_bzureportPDS).member(member).file(reportLogFile).copyMode(DBBConstants.CopyMode.valueOf("BINARY")).append(false).copy()
-			println "Printing..."
 			// printReport
 			printReport(reportLogFile)
 		} else if (rc <= props.tazunittest_maxWarnRC.toInteger()){
