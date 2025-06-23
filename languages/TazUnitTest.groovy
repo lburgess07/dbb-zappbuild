@@ -42,6 +42,7 @@ int currentBuildFileNumber = 1
 
 	// get logical file
 	LogicalFile logicalFile = buildUtils.createLogicalFile(dependencyResolver, buildFile)
+	println(logicalFile)
 
 	// get playback dependency for bzucfg file from logicalFile
 	LogicalDependency playbackFile = getPlaybackFile(logicalFile);
