@@ -695,11 +695,17 @@ def saveStaticLinkDependencies(String buildFile, String loadPDS, String member, 
 		LogicalFile scannerLogicalFile = scanner.scan(buildUtils.relativizePath(buildFile), loadPDS, member)
 		if (props.verbose) println "*** Logical file = \n$scannerLogicalFile"
 
+		// DANGER! logicalFile is LIVE - in the cache. 
 		// overwrite original logicalDependencies with load module dependencies
-		logicalFile.setLogicalDependencies(scannerLogicalFile.getLogicalDependencies())
+		// logicalFile.setLogicalDependencies(scannerLogicalFile.getLogicalDependencies())
+		// instead, overwrite attributes on new logical file
+		scannerLogicalFile.setCICS(logicalFile.isCICS())
+		scannerLogicalFile.setSQL(logicalFile.isSQL())
+		scannerLogicalFile.setDLI(logicalFile.isDLI())
+		scannerLogicalFile.setMQ(logicalFile.isMQ())
 
 		// Store logical file and indirect dependencies to the outputs collection
-		metadataStore.getCollection("${props.applicationOutputsCollectionName}").addLogicalFile( logicalFile );
+		metadataStore.getCollection("${props.applicationOutputsCollectionName}").addLogicalFile( scannerLogicalFile );
 	}
 }
 
